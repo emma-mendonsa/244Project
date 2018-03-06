@@ -47,4 +47,4 @@ server <- function(input, output){
 }
 
 shinyApp(ui,server)
->>>>>>> 37947a7e45e0ab142034f756e894a847427641f4
+
