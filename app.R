@@ -1,5 +1,7 @@
 library(shinydashboard)
 
+#Hey Hey Claire's here
+
 ui <- dashboardPage(skin = "purple",
   dashboardHeader(title = "The App of Happiness"),
   
