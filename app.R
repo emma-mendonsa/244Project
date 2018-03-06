@@ -1,13 +1,16 @@
 library(shinydashboard)
 
-#LALAL
-#Okay one more time:
 #GIT Procedure: 
 # 1) Add code
 # 2) Save code
 # 3) Press commit
 # 4) Add comment in pop-up
-# 5) 
+# 5) Click blue "Stage chunk" button
+# 6) Press commit button
+# 7) Press green arrow "Push"
+# 8) See pop-up confirming code sent to Git
+# 9) Go online and see the updated code
+
 
 ui <- dashboardPage(
   dashboardHeader(title = "An App of Happiness"),
