@@ -5,7 +5,7 @@ library(shinydashboard)
 # 2) Save code
 # 3) Press commit
 # 4) Add comment in pop-up
-# 5) Click blue "Stage chunk" button
+# 5) Click "Stage All" button
 # 6) Press commit button
 # 7) Press green arrow "Push"
 # 8) See pop-up confirming code sent to Git
