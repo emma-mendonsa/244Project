@@ -11,6 +11,7 @@ library(shinydashboard)
 # 8) See pop-up confirming code sent to Git
 # 9) Go online and see the updated code
 
+#Changed this on GitHub
 
 ui <- dashboardPage(
   dashboardHeader(title = "An App of Happiness"),
