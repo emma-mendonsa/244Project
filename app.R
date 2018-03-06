@@ -1,4 +1,5 @@
 library(shinydashboard)
+library(wesanderson) #2nd best to unicorns
 
 ui <- dashboardPage(skin = "purple",
   dashboardHeader(title = "The App of Happiness"),
