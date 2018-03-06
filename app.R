@@ -2,6 +2,12 @@ library(shinydashboard)
 
 #LALAL
 #Okay one more time:
+#GIT Procedure: 
+# 1) Add code
+# 2) Save code
+# 3) Press commit
+# 4) Add comment in pop-up
+# 5) 
 
 ui <- dashboardPage(
   dashboardHeader(title = "An App of Happiness"),
