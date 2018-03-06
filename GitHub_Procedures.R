@@ -1,3 +1,18 @@
+#Opening GitHub file on Rstudio
+# In GitHub;
+# 1) Get to repository/main project folder
+# 2) Click on green "Clone or Download" button
+# 3) Copy HTTPS
+
+# In RStudio:
+# 1) Click File
+# 2) Add New Project
+# 3) Select "Version Control" type
+# 4) Paste HTTPS into Pop-Up
+# 5) Choose where you want the project to save via "Browse"
+# 6) Click "Create Project"
+# 7) RStudio will download the GitHub info
+
 #"Push"/Send Updates to GIT Procedure: 
 # 1) Add code
 # 2) Save code
