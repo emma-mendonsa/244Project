@@ -34,7 +34,17 @@ ui <- dashboardPage(skin = "purple",
             title = "Country Comparisons",
             sliderInput("slider", "Country Happiness Range:", 1, 100, 50)
           )
+        ),
+        fluidRow(
+          checkboxGroupInput(inputId = "Region", "Select Region(s) of Interest:", choiceNames = "Regions", 
+                             inline = TRUE),
+          sliderInput(inputId = "Year", "Year", min = 2015, max = 2016),
+          radioButtons(inputId = "VariableX", label = "Select X-axis:"),
+          radioButtons(inputId = "VariableY", label = "Select Y-axis:"),
+          plotOutput(outputId = "bubble")
+          
         )
+
       )
     )
   ))
@@ -48,6 +58,12 @@ server <- function(input, output){
     data <- histdata[seq_len(input$slider)]
     hist(data)
   
+  })
+  output$bubble <- renderPlot({
+    ggplot(happy_1516, aes(x=input$VariableX,y=input$VariableY)+
+             geom_point(aes(size = Rank, color = input$Region), alpha = 0.5)+
+             theme_classic())
+    
   })
 }
 
