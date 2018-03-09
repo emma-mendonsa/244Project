@@ -35,6 +35,7 @@ ui <- dashboardPage(skin = "purple",
         fluidRow(
           box(selectInput("variable", "Select Characteristic:",
                       c("GDP"="GDP", "Health" = "Health", "Trust" = "Trust", "Generosity" = "Generosity"))),
+          box(sliderInput("Rank", "Happiness Ranking - \nClick & Drag for 2 sliders:", min = 1, max = 160, happy_all$Rank)),
           box(tableOutput("mini"))
         )
         )
@@ -56,7 +57,11 @@ server <- function(input, output){
     
   #})
   output$mini <- renderTable({
-    happy_all[c("Country", "Rank",input$variable)]
+    filtered <-
+      happy_all %>% 
+      filter(Rank >= input$Rank[1], 
+             Rank <= input$Rank[2])
+    filtered[c("Year", "Country", "Rank",input$variable)]
   })
 }
 
