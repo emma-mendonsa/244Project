@@ -8,7 +8,8 @@ ui <- dashboardPage(skin = "purple",
     sidebarMenu(
       menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
       menuItem("Global Perspective", tabName = "widget1", icon = icon("globe")),
-      menuItem("Comparisons", tabName = "widget2", icon = icon("bar-chart"))
+      menuItem("Comparisons", tabName = "widget2", icon = icon("bar-chart")),
+      menuItem("Table", tabName = "widget3", icon = icon("table"))
     )),
   
   dashboardBody(
@@ -28,21 +29,16 @@ ui <- dashboardPage(skin = "purple",
           box(
             title = "Country Comparisons",
             sliderInput("slider", "Country Happiness Range:", 1, 100, 50)
-          )
-        ),
+          ))),
+      #Fourth tab
+      tabItem(tabName = "widget3",
         fluidRow(
-          checkboxGroupInput(inputId = "Region", "Select Region(s) of Interest:", choiceNames = "Regions", 
-                             inline = TRUE),
-          sliderInput(inputId = "Year", "Year", min = 2015, max = 2016),
-          radioButtons(inputId = "VariableX", label = "Select X-axis:"),
-          radioButtons(inputId = "VariableY", label = "Select Y-axis:"),
-          plotOutput(outputId = "bubble")
-          
+          box(selectInput("variable", "Select Characteristic:",
+                      c("GDP"="GDP", "Health" = "Health", "Trust" = "Trust", "Generosity" = "Generosity"))),
+          box(tableOutput("mini"))
         )
-
-      )
-    )
-  ))
+        )
+        )))
 
 
 server <- function(input, output){
@@ -52,13 +48,15 @@ server <- function(input, output){
   output$plot1 <- renderPlot({
     data <- histdata[seq_len(input$slider)]
     hist(data)
-  
-  })
-  output$bubble <- renderPlot({
-    ggplot(happy_1516, aes(x=input$VariableX,y=input$VariableY)+
-             geom_point(aes(size = Rank, color = input$Region), alpha = 0.5)+
-             theme_classic())
+    })
+  #output$bubble <- renderPlot({
+  #  ggplot(happy_1516, aes(x=input$VariableX,y=input$VariableY)+
+  #           geom_point(aes(size = Rank, color = input$Region), alpha = 0.5)+
+  #           theme_classic())
     
+  #})
+  output$mini <- renderTable({
+    happy_all[c("Country", "Rank",input$variable)]
   })
 }
 
