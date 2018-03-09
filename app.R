@@ -1,4 +1,5 @@
 library(shinydashboard)
+library(tidyverse)
 library(wesanderson) 
 
 ui <- dashboardPage(skin = "purple",
