@@ -1,6 +1,9 @@
 library(shinydashboard)
 library(tidyverse)
 library(wesanderson) 
+library(rworldmap)
+library(rgdal)
+library(WDI)
 
 ui <- dashboardPage(skin = "purple",
   dashboardHeader(title = "The App of Happiness"),
@@ -21,7 +24,45 @@ ui <- dashboardPage(skin = "purple",
             h2("Introduce our App")),
       #Second tab content
       tabItem(tabName = "widget1",
-            h2("Claire's beautiful map")),
+            fluidPage(
+              fluidRow(h1("Map")),
+              fluidRow(column(2,
+                              h3("rworldmapUI"),
+                              radioButtons("Year", "Year :",
+                                          c("2015" = "2015",
+                                            "2016" = "2016",
+                                            "2017" = "2017"
+                                          )),
+                              
+                              
+                              selectInput("Variable", "Category",
+                                          c("Rank" = "Rank",
+                                            "Score" = "Score",
+                                            "GDP" = "GDP",
+                                            "Family" = "Family",
+                                            "Health" = "Health",
+                                            "Freedom" = "Freedom",
+                                            "Trust" = "Trust",
+                                            "Dystopia Residual" = "DysRes"
+                                          )),
+                              
+                              sliderInput("numCats", "num. categories :", 
+                                          min = 1,
+                                          max = 155, 
+                                          value = 1),
+                              
+                              
+                              selectInput("colourPalette", "Wes Anderson Color Palette :",
+                                          c("Zissou" = "zissou",
+                                            "YlGnBu" = "YlGnBu",
+                                            "Purples" = "Purples",
+                                            "PuBuGn" = "PuBuGn",
+                                            "Greens" = "Greens"
+                                          ))
+                      
+                              
+                              ))
+            )),
       #Third tab
       tabItem(tabName = "widget2",
         fluidRow(
