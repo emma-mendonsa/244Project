@@ -1,4 +1,5 @@
 library(shinydashboard)
+library(shiny)
 library(tidyverse)
 library(wesanderson) 
 library(rworldmap)
@@ -26,8 +27,10 @@ ui <- dashboardPage(skin = "purple",
       tabItem(tabName = "widget1",
             fluidPage(
               fluidRow(h1("Map")),
-              fluidRow(column(2,
+              fluidRow(column(4,
+                              
                               h3("rworldmapUI"),
+                              
                               radioButtons("Year", "Year :",
                                           c("2015" = "2015",
                                             "2016" = "2016",
@@ -46,11 +49,10 @@ ui <- dashboardPage(skin = "purple",
                                             "Dystopia Residual" = "DysRes"
                                           )),
                               
-                              sliderInput("numCats", "num. categories :", 
-                                          min = 1,
+                              sliderInput("numCats", "# of Countries", 
+                                          min =  1,
                                           max = 155, 
-                                          value = 1),
-                              
+                                          value = 10),
                               
                               selectInput("colourPalette", "Wes Anderson Color Palette :",
                                           c("Zissou" = "zissou",
@@ -58,11 +60,19 @@ ui <- dashboardPage(skin = "purple",
                                             "Purples" = "Purples",
                                             "PuBuGn" = "PuBuGn",
                                             "Greens" = "Greens"
-                                          ))
-                      
-                              
-                              ))
-            )),
+                                          )),
+                              checkboxInput("addLegend", "addLegend", TRUE) 
+              
+                              ),
+                       
+                       mainPanel("Map View", plotOutput("mapplot"))
+                       )
+                       
+                       )
+            
+                       
+                       
+            ),
       #Third tab
       tabItem(tabName = "widget2",
         fluidRow(
@@ -92,7 +102,23 @@ server <- function(input, output){
     data <- histdata[seq_len(input$slider)]
     hist(data)
     })
-  #output$bubble <- renderPlot({
+  
+sPDF <- joinCountryData2Map(world_happiness
+                                     , joinCode = "ISO3"
+                                     , nameJoinColumn="ISO")
+output$mapplot <- renderPlot({
+  mapplot <- mapCountryData(sPDF, 
+                              nameColumnToPlot = "Rank15",
+                              catMethod = 'categorical',
+                              colourPalette = zissou,
+                              missingCountryCol = "grey60",
+                              addLegend = FALSE
+                            )
+})
+
+
+
+#output$bubble <- renderPlot({
   #  ggplot(happy_1516, aes(x=input$VariableX,y=input$VariableY)+
   #           geom_point(aes(size = Rank, color = input$Region), alpha = 0.5)+
   #           theme_classic())
