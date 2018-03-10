@@ -2,23 +2,16 @@ library(shinydashboard)
 library(shiny)
 library(tidyverse)
 library(wesanderson) 
-<<<<<<< HEAD
-library(tidyverse)
-=======
 library(rworldmap)
 library(sf)
 library(sp)
-library(gstat)
 library(rgdal)
-<<<<<<< HEAD
 library(maptools)
 library(mapdata)
 library(rworldmap)
 library(RColorBrewer)
-=======
 library(WDI)
->>>>>>> bc58b4df4e70e043bfa1a6709ab64d7f2be15fef
->>>>>>> d69ca59a43a7a61d8d30480f91cc621e7c49aa27
+
 
 ui <- dashboardPage(skin = "purple",
   dashboardHeader(title = "The App of Happiness"),
@@ -91,6 +84,8 @@ ui <- dashboardPage(skin = "purple",
             title = "Country Comparisons",
             sliderInput("slider", "Country Happiness Range:", 1, 100, 50)
           ))),
+      
+      
       #Fourth tab
       tabItem(tabName = "widget3",
         fluidRow(
