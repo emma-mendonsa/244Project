@@ -63,8 +63,9 @@ ggplot(data = mini, aes(x=Country, y=Trust))+
   geom_bar(stat="identity", position = position_dodge())
 
 ggplot(happy_1516, aes(x=Health, y=Generosity))+
-  geom_point(aes(size = Rank, color = Region), alpha = 0.5)+
-  theme_classic()
+  geom_point(aes(size = Rank, color = Country), alpha = 0.5)+
+  theme_classic()+
+  theme(legend.position = "none")
 
 
 
