@@ -19,8 +19,7 @@ ui <- dashboardPage(skin = "purple",
     sidebarMenu(
       menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
       menuItem("Global Perspective", tabName = "widget1", icon = icon("globe")),
-      menuItem("Comparisons", tabName = "widget2", icon = icon("bar-chart")),
-      menuItem("Table", tabName = "widget3", icon = icon("table"))
+      menuItem("Comparisons", tabName = "widget3", icon = icon("bar-chart"))
     )),
   
   dashboardBody(
@@ -87,20 +86,10 @@ ui <- dashboardPage(skin = "purple",
                   )
                 )
                 
-              ))
-      , 
+              )),
+      
+      
       #Third tab
-      tabItem(tabName = "widget2",
-        fluidRow(
-          box(plotOutput("plot1", height = 250)),
-      
-          box(
-            title = "Country Comparisons",
-            sliderInput("slider", "Country Happiness Range:", 1, 100, 50)
-          ))),
-      
-      
-      #Fourth tab
       tabItem(tabName = "widget3",
         fluidPage(
 
@@ -118,7 +107,7 @@ ui <- dashboardPage(skin = "purple",
                 status = "primary",
                 solidHeader = T),
 
-            box(sliderInput("Rank", "Click & Drag for 2 sliders:",1,160,c(20,50)),
+            box(sliderInput("Rank", "",1,160,c(1,145)),
                 title = "Happiness Ranking:",
                 status = "primary",
                 solidHeader = T),
@@ -200,21 +189,6 @@ output$mapplot17 <- renderPlot({
                               addLegend = input$addLegend)
 })
 
-  set.seed(122)
-  histdata <- rnorm(500)
-  
-  output$plot1 <- renderPlot({
-    data <- histdata[seq_len(input$slider)]
-    hist(data)
-    })
-
-
-#output$bubble <- renderPlot({
-  #  ggplot(happy_1516, aes(x=input$VariableX,y=input$VariableY)+
-  #           geom_point(aes(size = Rank, color = input$Region), alpha = 0.5)+
-  #           theme_classic())
-    
-  #})
 
 
   output$mini <- renderTable({
@@ -244,10 +218,11 @@ output$mapplot17 <- renderPlot({
     plot_ly(bubble_table, x= ~x, y= ~y,
             text = ~Country, color = ~Rank,
             type = 'scatter', mode = 'markers',
-            marker = list(size = 15, opacity = 3)) %>% 
+            marker = list(size = 15, opacity = .5)) %>% 
       layout(title = paste(input$variableA, "vs. ", input$variableB),
-             xaxis = list(title = input$variableA),
-             yaxis = list(title = input$variableB))
+             xaxis = list(range = c(0,2), title = input$variableA, showgrid = FALSE),
+             yaxis = list(range = c(0,2), title = input$variableB, showgrid = FALSE),
+             font = list(size = 12))
 
   })
 }
