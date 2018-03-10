@@ -88,11 +88,13 @@ ui <- dashboardPage(skin = "purple",
       tabItem(tabName = "widget3",
         fluidRow(
           box(selectInput("variable", "Select Characteristic:",
-                      c("GDP"="GDP", "Health" = "Health", "Trust" = "Trust", "Generosity" = "Generosity"))),
+                      c("GDP"="GDP", "Family" = "Family", "Health" = "Health", "Freedom" = "Freedom", "Trust" = "Trust"))),
           box(sliderInput("Rank", "Happiness Ranking - \nClick & Drag for 2 sliders:",1,160,c(20,50))),
           box(tableOutput("mini"))
         )
         )
+      
+      #Fifth tab
         )))
 
 server <- function(input, output){
@@ -154,10 +156,13 @@ output$mapplot17 <- renderPlot({
   #           theme_classic())
     
   #})
+  
   output$mini <- renderTable({
-    filtered <- vertical%>% 
+    filtered <- vertical_table%>% 
       filter(Rank >= input$Rank[1], 
-             Rank <= input$Rank[2])
+             Rank <= input$Rank[2]) %>% 
+      arrange(Rank, Country)
+    
     filtered[c("Year", "Country", "Rank",input$variable)]
   })
 }

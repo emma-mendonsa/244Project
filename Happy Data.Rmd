@@ -116,6 +116,7 @@ iso17 <- horizontal %>%
 colnames(iso17) <- c("Year","Country","Rank","Score","GDP","Family","Health","Freedom","Trust","DysRes")
 
 vertical_table <- rbind(iso15, iso16, iso17)
+vertical_table$Year <- as.character(vertical_table$Year)
 ```
 
 
@@ -212,9 +213,9 @@ rushmore <- wes_palette("Rushmore", type = "continuous")
 # Map data using rworld map
 
 map_all_2015 <- mapCountryData(world_happy, 
-               nameColumnToPlot = "Rank15",
+               nameColumnToPlot = "Rank",
                catMethod = 'categorical',
-               colourPalette = moonrise,
+               colourPalette = zissou,
                missingCountryCol = "grey0",
                mapTitle = "Global Happniness Rankings")
 ```
