@@ -3,8 +3,14 @@ library(shiny)
 library(tidyverse)
 library(wesanderson) 
 library(rworldmap)
+library(sf)
+library(sp)
+library(gstat)
 library(rgdal)
-library(WDI)
+library(maptools)
+library(mapdata)
+library(rworldmap)
+library(RColorBrewer)
 
 ui <- dashboardPage(skin = "purple",
   dashboardHeader(title = "The App of Happiness"),
@@ -32,49 +38,42 @@ ui <- dashboardPage(skin = "purple",
                 fluidRow(
                   column(2,
                          
-                         h3("rworldmapUI"),
-                   
-                         radioButtons("year", "Year",
-                                     c("2015" = "2015",
-                                       "2016" = "2016",
-                                       "2017" = "2017"
-                                     )),           
+                         h3("World Map"),
+      
+                         selectInput("variable2", "Category",
+                                     c("Rank" = "Rank",
+                                       "Score" = "Score",
+                                       "GDP" = "GDP",
+                                       "Family" = "Family",
+                                       "Health" = "Health",
+                                       "Freedom" = "Freedom",
+                                       "Trust" = "Trust",
+                                       "Dystopia Residual" = "DysRes"
+                                       )),
+            
+
                          
-                         selectInput("catMethod", "categorisation :",
-                                     c("quantiles" = "quantiles",
-                                       "fixedWidth" = "fixedWidth",
-                                       "logFixedWidth" = "logFixedWidth"                         
-                                     )),          
-                         
-                         sliderInput("Rank", "Happiness Ranking", 
-                                     min = 1,
-                                     max = 100,
-                                     value = 10),
-                         
-                         
-                         selectInput("colourPalette", "colourPalette :",
-                                     c("Zissou" = "Zissou",
-                                       "YlGnBu" = "YlGnBu",
-                                       "Purples" = "Purples",
-                                       "PuBuGn" = "PuBuGn",
-                                       "Greens" = "Greens"
+                         selectInput("colourPalette", "colourPalette",
+                                     c("zissou" = "zissou",
+                                       "rushmore" = "rushmore"
                                      )), 
-   
-                         
+
                          checkboxInput("addLegend", "addLegend", TRUE) #var,name
                   ),
                   
                   column(10,
                          
-                        mainPanel("mapplot", plotOutput("mapplot", width = "1200", height = "800")
-                           )
-                           )
- 
+                        tabsetPanel(
+                          tabPanel("2015", plotOutput("mapplot15", width = "800", height = "500")),
+                          tabPanel("2016", plotOutput("mapplot16", width = "800", height = "500")),
+                          tabPanel("2017", plotOutput("mapplot17", width = "800", height = "500"))
+                                  
+                          )
                   )
-                
+                )
                 
               ))
-      ,
+      , 
       #Third tab
       tabItem(tabName = "widget2",
         fluidRow(
@@ -97,6 +96,50 @@ ui <- dashboardPage(skin = "purple",
 
 
 server <- function(input, output){
+ 
+
+ 
+vertical <- joinCountryData2Map(vertical
+                                  , joinCode = "ISO3"
+                                  , nameJoinColumn="ISO")
+
+#colourPalette <- brewer.pal(10,'Spectral')
+zissou <- wes_palette("Zissou", type = "continuous")
+moonrise <- wes_palette("Moonrise1", type = "continuous")
+
+output$mapplot15 <- renderPlot({
+  
+  mapplot15 <- mapCountryData(vert15,
+                              nameColumnToPlot = input$variable2,
+                              catMethod = 'categorical',
+                              colourPalette = rushmore,
+                              missingCountryCol = "grey60",
+                              addLegend = input$addLegend)
+
+})
+  
+
+output$mapplot16 <- renderPlot({
+  
+  mapplot16 <- mapCountryData(vert16,
+                              nameColumnToPlot = input$variable2,
+                              catMethod = 'categorical',
+                              colourPalette = input$colourPalette,
+                              missingCountryCol = "grey60",
+                              addLegend = input$addLegend)
+})
+
+output$mapplot17 <- renderPlot({
+  
+  mapplot17 <- mapCountryData(vert17,
+                              nameColumnToPlot = input$variable2,
+                              catMethod = 'categorical',
+                              colourPalette = input$colourPalette,
+                              missingCountryCol = "grey90",
+                              oceanCol = "slategray1",
+                              addLegend = input$addLegend)
+})
+
   set.seed(122)
   histdata <- rnorm(500)
   
@@ -104,18 +147,6 @@ server <- function(input, output){
     data <- histdata[seq_len(input$slider)]
     hist(data)
     })
-  
-sPDF <- joinCountryData2Map(world_happiness
-                                     , joinCode = "ISO3"
-                                     , nameJoinColumn="ISO")
-output$mapplot <- renderPlot({
-  mapplot <- mapCountryData(sPDF, 
-                              nameColumnToPlot = "Rank15",
-                              catMethod = 'categorical',
-                              colourPalette = zissou,
-                              missingCountryCol = "grey60",
-                              addLegend = TRUE)
-})
 
 
 
