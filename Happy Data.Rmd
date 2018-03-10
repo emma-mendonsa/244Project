@@ -31,7 +31,7 @@ longlat <- read_csv("latlong.csv")
 Individual years dataframes
 ```{r combine_data}
 # Add year column
-# happy2015$Year <- rep(2015, 158)
+happy2015$Year <- rep(2015, 158)
 
 # Reorder to put year on the left
 happy2015 <- happy2015[,c(13,1,2,3,4,5,6,7,8,9,10,11,12)]
@@ -40,15 +40,14 @@ happy2015 <- happy2015 %>%
 colnames(happy2015) <- c("Year","Country","Rank","Score","GDP","Family","Health","Freedom","Trust","DysRes")
 
 # Same process for 2016
-
-# happy2016$Year <- rep(2016, 157)
+happy2016$Year <- rep(2016, 157)
 happy2016 <- happy2016[,c(14,1,2,3,4,5,6,7,8,9,10,11,12,13)]
 happy2016 <- happy2016 %>% 
  select("Year","Country","Rank","Score","GDP","Family","Health","Freedom","Trust","DysRes")
 colnames(happy2016) <- c("Year","Country","Rank","Score","GDP","Family","Health","Freedom","Trust","DysRes")
 
 # Same Process for 2017
-#happy2017$Year <- rep(2017, 155)
+happy2017$Year <- rep(2017, 155)
 happy2017 <- happy2017[,c(13,1,2,3,4,5,6,7,8,9,10,11,12)]
 happy2017 <- happy2017 %>% 
   select("Year","Country","Rank","Score","GDP","Family","Health","Freedom","Trust","DysRes")
@@ -61,7 +60,7 @@ colnames(happy2017) <- c("Year","Country","Rank","Score","GDP","Family","Health"
 Dataframe with years combines vertically
 ```{r}
 # Combine all years into stacked data
-vertical_years <- rbind(happy2017,happy2016,happy2015)
+# vertical_years <- rbind(happy2017,happy2016,happy2015)
 ```
 
 Dataframe with years combined horizontally
@@ -80,89 +79,46 @@ horizontal <- horizontal[,c(1,2,29, 3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,
 colnames(horizontal) <- c("Year15","Country","ISO","Rank15","Score15","GDP15","Family15","Health15","Freedom15","Trust15","DysRes15","Year16","Rank16","Score16","GDP16","Family16","Health16","Freedom16","Trust16","DysRes16","Year17","Rank17","Score17","GDP17","Family17","Health17","Freedom17","Trust17","DysRes17")
 ```
 
-Horizontal dataframe with lat long. 
 ```{r}
-#add coordinates to horizontal
-horizontal_longlat <- full_join(horizontal, longlat, by = "Country")
+iso15 <- horizontal %>% 
+  select(Year15, Country, ISO, Rank15, Score15, GDP15, Family15, Health15, Freedom15, Trust15, DysRes15) %>% 
+  filter(Year15 !="NA")
+colnames(iso15) <- c("Year","Country","ISO","Rank","Score","GDP","Family","Health","Freedom","Trust","DysRes")
 
-# Add specital component with long/lat coordinates
-horizontal_geom <- st_as_sf(horizontal_longlat, coords = c("long","lat"))
+iso16 <- horizontal %>% 
+  select(Year16, Country, ISO, Rank16, Score16, GDP16, Family16, Health16, Freedom16, Trust16, DysRes16) %>% 
+  filter(Year16 !="NA")
+colnames(iso16) <- c("Year","Country","ISO","Rank","Score","GDP","Family","Health","Freedom","Trust","DysRes")
+
+iso17 <- horizontal %>% 
+  select(Year17, Country, ISO, Rank17, Score17, GDP17, Family17, Health17, Freedom17, Trust17, DysRes17) %>% 
+  filter(Year17 !="NA")
+colnames(iso17) <- c("Year","Country","ISO","Rank","Score","GDP","Family","Health","Freedom","Trust","DysRes")
+
+vertical <- rbind(iso15,iso16,iso17)
 ```
-
-Basic histograms
-```{r}
-class(top10_15$Rank)
-as.numeric(top10_15$Rank)
-ggplot(top10_15, aes(x=reorder(Country,-Rank15), y = Rank15)) +
-  geom_bar(stat="identity", aes(fill = "Rank"))
-```
-
-```{r package_mapdata}
-# Basic world map
-map('worldHires')
-```
-
 
 ```{r}
-#Basic world map
-countries <- st_read(dsn=".",layer = "TM_WORLD_BORDERS-0.3")
-#plot(countries)
+
+iso15 <- horizontal %>% 
+  select(Year15, Country, Rank15, Score15, GDP15, Family15, Health15, Freedom15, Trust15, DysRes15) %>% 
+  filter(Year15 !="NA")
+colnames(iso15) <- c("Year","Country","Rank","Score","GDP","Family","Health","Freedom","Trust","DysRes")
+
+iso16 <- horizontal %>% 
+  select(Year16, Country, Rank16, Score16, GDP16, Family16, Health16, Freedom16, Trust16, DysRes16) %>% 
+  filter(Year16 !="NA")
+colnames(iso16) <- c("Year","Country","Rank","Score","GDP","Family","Health","Freedom","Trust","DysRes")
+
+iso17 <- horizontal %>% 
+  select(Year17, Country,  Rank17, Score17, GDP17, Family17, Health17, Freedom17, Trust17, DysRes17) %>% 
+  filter(Year17 !="NA")
+colnames(iso17) <- c("Year","Country","Rank","Score","GDP","Family","Health","Freedom","Trust","DysRes")
+
+vertical_table <- rbind(iso15, iso16, iso17)
 ```
 
-Top 10 rankings for each year with long/lat coordinates
-```{r}
-map_15 <- full_join(happy2015, longlat, by = "Country") %>% 
-  filter(Year !="NA") %>% 
-  st_as_sf(coords=c("lat","long"))
 
-map_16 <- full_join(happy2016, longlat, by = "Country") %>% 
-  filter(Year !="NA") %>% 
-  st_as_sf(coords=c("lat","long"))
-  
-map_17 <- full_join(happy2017, longlat, by = "Country") %>% 
-  filter(Year !="NA") %>% 
-  st_as_sf(coords=c("lat","long"))
-```
-
-Countries with bubbles
-```{r bubbles_on_countries}
-## Cdf coordinate systems
-st_crs(map_15) <- 4326
-st_crs(countries) <- 4326
-
-ggplot(map_15)+
-  geom_sf(data=countries) +
-  geom_sf(aes(color = Rank))+
-  scale_color_gradient(low="red",high="green")+
-  theme_bw()
-```
-Whole world happiness
-```{r rworld_all_countries}
-#map("world")
-
-# Data for whole world happiness ranking
-world_happiness <- horizontal %>% 
-  filter(Year15 == "2015") %>% 
-  select("Country","ISO","Rank15")
-
-# Prep data for mapping with rworldmap
-world_happy <- joinCountryData2Map(world_happiness
-                            , joinCode = "ISO3"
-                            , nameJoinColumn="ISO")
-
-# Trying to find the unicorn palette...
-colourPalette <- brewer.pal(10,'Spectral')
-zissou <- wes_palette("Zissou", type = "continuous")
-
-# Map data using rworld map
-
-map_all_2015 <- mapCountryData(world_happy, 
-               nameColumnToPlot = "Rank15",
-               catMethod = 'categorical',
-               colourPalette = zissou,
-               missingCountryCol = "grey60",
-               mapTitle = "Global Happniness Rankings")
-```
 
 -Datasets for mapping with rworldmap (no coordinates)
 ```{r}
@@ -182,6 +138,87 @@ top10_17<-horizontal%>%
   arrange(Rank17) %>% 
   head(10)
 ```
+
+Horizontal dataframe with lat long. 
+```{r}
+#add coordinates to horizontal
+#horizontal_longlat <- full_join(horizontal, longlat, by = "Country")
+
+# Add specital component with long/lat coordinates
+#horizontal_geom <- st_as_sf(horizontal_longlat, coords = c("long","lat"))
+```
+
+```{r package_mapdata}
+# Basic world map
+#map('worldHires')
+```
+
+
+```{r}
+#Basic world map
+#countries <- st_read(dsn=".",layer = "TM_WORLD_BORDERS-0.3")
+#plot(countries)
+```
+
+
+Top 10 rankings for each year with long/lat coordinates
+```{r}
+map_15 <- full_join(happy2015, longlat, by = "Country") %>% 
+  filter(Year !="NA") %>% 
+  st_as_sf(coords=c("lat","long"))
+
+map_16 <- full_join(happy2016, longlat, by = "Country") %>% 
+  filter(Year !="NA") %>% 
+  st_as_sf(coords=c("lat","long"))
+  
+map_17 <- full_join(happy2017, longlat, by = "Country") %>% 
+  filter(Year !="NA") %>% 
+  st_as_sf(coords=c("lat","long"))
+```
+
+
+Countries with bubbles
+```{r bubbles_on_countries}
+## Cdf coordinate systems
+#st_crs(map_15) <- 4326
+#st_crs(countries) <- 4326
+
+#ggplot(map_15)+
+#  geom_sf(data=countries) +
+#  geom_sf(aes(color = Rank))+
+#  scale_color_gradient(low="red",high="green")+
+#  theme_bw()
+```
+
+Whole world happiness
+```{r rworld_all_countries}
+# map("world")
+
+# Data for whole world happiness ranking
+world_happiness <- horizontal %>% 
+  filter(Year15 == "2015") %>% 
+  select("Country","ISO","Rank15")
+
+# Prep data for mapping with rworldmap
+world_happy <- joinCountryData2Map(vertical
+                            , joinCode = "ISO3"
+                            , nameJoinColumn="ISO")
+
+# Trying to find the unicorn palette...
+# colourPalette <- brewer.pal(10,'Spectral')
+zissou <- wes_palette("Zissou", type = "continuous")
+rushmore <- wes_palette("Rushmore", type = "continuous")
+
+# Map data using rworld map
+
+map_all_2015 <- mapCountryData(world_happy, 
+               nameColumnToPlot = "Rank15",
+               catMethod = 'categorical',
+               colourPalette = moonrise,
+               missingCountryCol = "grey0",
+               mapTitle = "Global Happniness Rankings")
+```
+
 
 Prep data to be mapped with rworldmap - 10 Happiest for each year.
 ```{r}
@@ -213,6 +250,26 @@ mapCountryData(top10_17map,
                nameColumnToPlot = "Rank17",
                catMethod = 'categorical',
                colourPalette = zissou)
+```
 
+```{r}
+vert15 <- vertical %>% 
+  filter(Year =="2015")
+
+vert16 <- vertical %>% 
+  filter(Year =="2016")
+
+vert17 <- vertical %>% 
+  filter(Year =="2017")
+
+vert15 <- joinCountryData2Map(vert15
+                                , joinCode = "ISO3"
+                                , nameJoinColumn="ISO")
+vert16 <- joinCountryData2Map(vert16
+                              , joinCode = "ISO3"
+                              , nameJoinColumn="ISO")
+vert17 <- joinCountryData2Map(vert17
+                              , joinCode = "ISO3"
+                              , nameJoinColumn="ISO")
 ```
 

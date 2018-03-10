@@ -10,11 +10,6 @@ library(maptools)
 library(mapdata)
 library(rworldmap)
 library(RColorBrewer)
-<<<<<<< HEAD
-library(WDI)
-
-=======
->>>>>>> d90ac302dcbb27cae26e68954e18778a3c285681
 
 ui <- dashboardPage(skin = "purple",
   dashboardHeader(title = "The App of Happiness"),
