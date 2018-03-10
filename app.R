@@ -87,10 +87,16 @@ ui <- dashboardPage(skin = "purple",
       #Fourth tab
       tabItem(tabName = "widget3",
         fluidRow(
-          box(selectInput("variable", "Select Characteristic:",
-                      c("GDP"="GDP", "Family" = "Family", "Health" = "Health", "Freedom" = "Freedom", "Trust" = "Trust"))),
+          box(selectInput("variableA", "Select Characteristic:",
+                      c("GDP"="GDP", "Family" = "Family", "Health" = "Health", "Freedom" = "Freedom", "Trust" = "Trust"),
+                      selected = "GDP")),
+          box(selectInput("variableB", "Select Characteristic:",
+                      c("GDP"="GDP", "Family" = "Family", "Health" = "Health", "Freedom" = "Freedom", "Trust" = "Trust"),
+                      selected = "Health")),
           box(sliderInput("Rank", "Happiness Ranking - \nClick & Drag for 2 sliders:",1,160,c(20,50))),
-          box(tableOutput("mini"))
+          box(radioButtons("Year", "Year", c("2015" = "2015", "2016" = "2016", "2017" = "2017"))),
+          box(tableOutput("mini")),
+          box(plotlyOutput("bubble"))
         )
         )
       
@@ -149,21 +155,33 @@ output$mapplot17 <- renderPlot({
     })
 
 
-
-#output$bubble <- renderPlot({
-  #  ggplot(happy_1516, aes(x=input$VariableX,y=input$VariableY)+
-  #           geom_point(aes(size = Rank, color = input$Region), alpha = 0.5)+
-  #           theme_classic())
-    
-  #})
-  
   output$mini <- renderTable({
+
     filtered <- vertical_table%>% 
       filter(Rank >= input$Rank[1], 
-             Rank <= input$Rank[2]) %>% 
+             Rank <= input$Rank[2],
+             Year == input$Year) %>% 
       arrange(Rank, Country)
     
-    filtered[c("Year", "Country", "Rank",input$variable)]
+    filtered[c("Year", "Country", "Score", input$variableA, input$variableB)]
+  })
+  
+  output$bubble <- renderPlotly({
+    
+    bubble <- vertical_table %>% 
+      filter(Rank >= input$Rank[1],
+             Rank <= input$Rank[2],
+             Year == input$Year) %>% 
+      arrange(Rank, Country)
+    
+    plot_ly(vertical_table, x= ~input$variableA, y= ~input$variableB,
+            text = ~Score,
+            type = 'scatter', mode = 'markers',
+            marker = list(size = ~Score, opacity = 0.5)) %>% 
+      layout(title = 'Comparison of Factors and Happiness',
+             xaxis = list(showgrid = FALSE),
+             yaxis = list(showgrid = FALSE))
+
   })
 }
 
