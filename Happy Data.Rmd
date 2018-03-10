@@ -97,12 +97,12 @@ colnames(iso17) <- c("Year","Country","ISO","Rank","Score","GDP","Family","Healt
 
 vertical <- rbind(iso15,iso16,iso17)
 
-vertical$Score <- round(vertical$Score,digits=c(2))
-vertical$GDP <- round(vertical$GDP,digits=c(2))
-vertical$Family <- round(vertical$Family,digits=c(2))
-vertical$Health <- round(vertical$Health,digits=c(2))
-vertical$Freedom <- round(vertical$Freedom,digits=c(2))
-vertical$Trust <- round(vertical$Trust,digits=c(2))
+#vertical$Score <- round(vertical$Score,digits=c(2))
+#vertical$GDP <- round(vertical$GDP,digits=c(2))
+#vertical$Family <- round(vertical$Family,digits=c(2))
+#vertical$Health <- round(vertical$Health,digits=c(2))
+#vertical$Freedom <- round(vertical$Freedom,digits=c(2))
+#vertical$Trust <- round(vertical$Trust,digits=c(2))
 ```
 
 ```{r}
