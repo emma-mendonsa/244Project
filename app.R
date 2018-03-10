@@ -102,22 +102,55 @@ ui <- dashboardPage(skin = "purple",
       
       #Fourth tab
       tabItem(tabName = "widget3",
-        fluidRow(
-          box(selectInput("variableA", "Select Characteristic:",
+        fluidPage(
+
+            box(selectInput("variableA", "",
                       c("GDP"="GDP", "Family" = "Family", "Health" = "Health", "Freedom" = "Freedom", "Trust" = "Trust"),
-                      selected = "GDP")),
-          box(selectInput("variableB", "Select Characteristic:",
+                      selected = "GDP"),
+                title = "Select Characteristic:",
+                status = "primary",
+                solidHeader = T),
+
+            box(selectInput("variableB", "",
                       c("GDP"="GDP", "Family" = "Family", "Health" = "Health", "Freedom" = "Freedom", "Trust" = "Trust"),
-                      selected = "Health")),
-          box(sliderInput("Rank", "Happiness Ranking - \nClick & Drag for 2 sliders:",1,160,c(20,50))),
-          box(radioButtons("Year", "Year", c("2015" = "2015", "2016" = "2016", "2017" = "2017"))),
-          box(tableOutput("mini")),
-          box(plotlyOutput("bubble"))
+                      selected = "Health"),
+                title = "Select Characteristic:",
+                status = "primary",
+                solidHeader = T),
+
+            box(sliderInput("Rank", "Click & Drag for 2 sliders:",1,160,c(20,50)),
+                title = "Happiness Ranking:",
+                status = "primary",
+                solidHeader = T),
+
+            box(radioButtons("Year", "", 
+                             c("2015" = "2015", "2016" = "2016", "2017" = "2017")),
+                title = "Year:",
+                status = "primary",
+                solidHeader = T)
+              
+              ),
+
+            box(tableOutput("mini"),
+                align = "center",
+                title = "Table Summary",
+                status = "success",
+                solidHeader = T),
+
+            box(plotlyOutput("bubble"),
+                title = "Graphical Summary",
+                status = "success",
+                solidHeader = T))
         )
-        )
+        ))
       
-      #Fifth tab
-        )))
+
+
+
+
+
+
+
 
 server <- function(input, output){
  
@@ -196,19 +229,25 @@ output$mapplot17 <- renderPlot({
   
   output$bubble <- renderPlotly({
     
-    bubble <- vertical_table %>% 
+    bubble_table <- vertical_table %>% 
       filter(Rank >= input$Rank[1],
              Rank <= input$Rank[2],
              Year == input$Year) %>% 
       arrange(Rank, Country)
+      #around(input$variableA, decimals = 1)
     
-    plot_ly(vertical_table, x= ~input$variableA, y= ~input$variableB,
-            text = ~Score,
+    colnames(bubble_table) <- c("Year","Country","Rank","Score","x","y")
+    bubble_table$x <- round(bubble_table$x, digits = c(2))
+    bubble_table$y <- round(bubble_table$y, digits = c(2))
+    
+    
+    plot_ly(bubble_table, x= ~x, y= ~y,
+            text = ~Country, color = ~Rank,
             type = 'scatter', mode = 'markers',
-            marker = list(size = ~Score, opacity = 0.5)) %>% 
-      layout(title = 'Comparison of Factors and Happiness',
-             xaxis = list(showgrid = FALSE),
-             yaxis = list(showgrid = FALSE))
+            marker = list(size = 15, opacity = 3)) %>% 
+      layout(title = paste(input$variableA, "vs. ", input$variableB),
+             xaxis = list(title = input$variableA),
+             yaxis = list(title = input$variableB))
 
   })
 }
