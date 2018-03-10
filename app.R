@@ -10,8 +10,11 @@ library(maptools)
 library(mapdata)
 library(rworldmap)
 library(RColorBrewer)
+<<<<<<< HEAD
 library(WDI)
 
+=======
+>>>>>>> d90ac302dcbb27cae26e68954e18778a3c285681
 
 ui <- dashboardPage(skin = "purple",
   dashboardHeader(title = "The App of Happiness"),
@@ -91,10 +94,7 @@ ui <- dashboardPage(skin = "purple",
         fluidRow(
           box(selectInput("variable", "Select Characteristic:",
                       c("GDP"="GDP", "Health" = "Health", "Trust" = "Trust", "Generosity" = "Generosity"))),
-          box(radioButtons("Year", "Year", 
-                           c("2015" = "2015", "2016" = "2016", "2017" = "2017"))),
-          box(sliderInput("Rank", "Happiness Ranking - Click for 2 sliders:", 
-                          1, 160, c(20,50))),
+          box(sliderInput("Rank", "Happiness Ranking - \nClick & Drag for 2 sliders:", min = 1, max = 160, happy_all$Rank)),
           box(tableOutput("mini"))
         )
         )
@@ -149,9 +149,6 @@ output$mapplot17 <- renderPlot({
   set.seed(122)
   histdata <- rnorm(500)
   
-  output
-  
-  
   output$plot1 <- renderPlot({
     data <- histdata[seq_len(input$slider)]
     hist(data)
@@ -167,17 +164,11 @@ output$mapplot17 <- renderPlot({
   #})
   output$mini <- renderTable({
     filtered <-
-      happy_all %>%
+      happy_all %>% 
       filter(Rank >= input$Rank[1], 
-             Rank <= input$Rank[2]) %>% 
-      filter(Year == input$Year) %>% 
-      arrange(Rank, Country)
-      
-    #filtered_order<- filtered[order(Rank,Country),]
+             Rank <= input$Rank[2])
     filtered[c("Year", "Country", "Rank",input$variable)]
   })
 }
 
 shinyApp(ui,server)
-
-#?Working!
