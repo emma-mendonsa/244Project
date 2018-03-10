@@ -96,11 +96,18 @@ iso17 <- horizontal %>%
 colnames(iso17) <- c("Year","Country","ISO","Rank","Score","GDP","Family","Health","Freedom","Trust","DysRes")
 
 vertical <- rbind(iso15,iso16,iso17)
+
+vertical$Score <- round(vertical$Score,digits=c(2))
+vertical$GDP <- round(vertical$GDP,digits=c(2))
+vertical$Family <- round(vertical$Family,digits=c(2))
+vertical$Health <- round(vertical$Health,digits=c(2))
+vertical$Freedom <- round(vertical$Freedom,digits=c(2))
+vertical$Trust <- round(vertical$Trust,digits=c(2))
 ```
 
 ```{r}
 
-iso15 <- horizontal %>% 
+iso15<- horizontal %>% 
   select(Year15, Country, Rank15, Score15, GDP15, Family15, Health15, Freedom15, Trust15, DysRes15) %>% 
   filter(Year15 !="NA")
 colnames(iso15) <- c("Year","Country","Rank","Score","GDP","Family","Health","Freedom","Trust","DysRes")
@@ -160,7 +167,6 @@ Horizontal dataframe with lat long.
 #plot(countries)
 ```
 
-
 Top 10 rankings for each year with long/lat coordinates
 ```{r}
 map_15 <- full_join(happy2015, longlat, by = "Country") %>% 
@@ -175,7 +181,6 @@ map_17 <- full_join(happy2017, longlat, by = "Country") %>%
   filter(Year !="NA") %>% 
   st_as_sf(coords=c("lat","long"))
 ```
-
 
 Countries with bubbles
 ```{r bubbles_on_countries}
@@ -200,23 +205,29 @@ world_happiness <- horizontal %>%
   select("Country","ISO","Rank15")
 
 # Prep data for mapping with rworldmap
-world_happy <- joinCountryData2Map(vertical
+vertical2 <- joinCountryData2Map(vertical
                             , joinCode = "ISO3"
                             , nameJoinColumn="ISO")
 
 # Trying to find the unicorn palette...
-# colourPalette <- brewer.pal(10,'Spectral')
-zissou <- wes_palette("Zissou", type = "continuous")
-rushmore <- wes_palette("Rushmore", type = "continuous")
+spectral <- brewer.pal(10,'Spectral')
+#zissou <- wes_palette("Zissou", type = "continuous")
+#rushmore <- wes_palette("Rushmore", type = "continuous")
 
 # Map data using rworld map
 
-map_all_2015 <- mapCountryData(world_happy, 
-               nameColumnToPlot = "Rank15",
-               catMethod = 'categorical',
-               colourPalette = moonrise,
-               missingCountryCol = "grey0",
-               mapTitle = "Global Happniness Rankings")
+  
+
+map_all_2015 <- mapCountryData(vertical2, 
+               nameColumnToPlot = "Rank",
+               numCats = 140,
+               catMethod = 'FixedWidth',
+               colourPalette = spectral,
+               missingCountryCol = "grey80",
+               mapTitle = "Global Happniness Rankings",
+               addLegend = TRUE)
+
+
 ```
 
 
@@ -265,6 +276,7 @@ vert17 <- vertical %>%
 vert15 <- joinCountryData2Map(vert15
                                 , joinCode = "ISO3"
                                 , nameJoinColumn="ISO")
+
 vert16 <- joinCountryData2Map(vert16
                               , joinCode = "ISO3"
                               , nameJoinColumn="ISO")
