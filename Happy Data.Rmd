@@ -211,12 +211,11 @@ vertical2 <- joinCountryData2Map(vertical
 
 # Trying to find the unicorn palette...
 spectral <- brewer.pal(10,'Spectral')
-#zissou <- wes_palette("Zissou", type = "continuous")
+zissou <- wes_palette("Zissou", 155, type = c("continuous"))
 #rushmore <- wes_palette("Rushmore", type = "continuous")
 
 # Map data using rworld map
 
-  
 
 map_all_2015 <- mapCountryData(vertical2, 
                nameColumnToPlot = "Rank",
