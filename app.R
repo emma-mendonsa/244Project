@@ -5,12 +5,16 @@ library(wesanderson)
 library(rworldmap)
 library(sf)
 library(sp)
-library(gstat)
 library(rgdal)
 library(maptools)
 library(mapdata)
 library(rworldmap)
 library(RColorBrewer)
+<<<<<<< HEAD
+library(WDI)
+
+=======
+>>>>>>> d90ac302dcbb27cae26e68954e18778a3c285681
 
 ui <- dashboardPage(skin = "purple",
   dashboardHeader(title = "The App of Happiness"),
@@ -83,6 +87,8 @@ ui <- dashboardPage(skin = "purple",
             title = "Country Comparisons",
             sliderInput("slider", "Country Happiness Range:", 1, 100, 50)
           ))),
+      
+      
       #Fourth tab
       tabItem(tabName = "widget3",
         fluidRow(

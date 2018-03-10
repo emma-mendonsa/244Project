@@ -71,11 +71,17 @@ ui <- fluidPage(
 # Define server logic required to draw a histogram
 server <- function(input, output) {
    
-   output$data <- renderTable({
-      # generate table based on input$Country from ui.R
-     
-     mini[input$Country, drop = FALSE]
-   })
+  output$mini <- renderTable({
+    filtered <-
+      happy_all %>%
+      filter(Rank >= input$Rank[1], 
+             Rank <= input$Rank[2]) %>% 
+      filter(Year == input$Year) %>% 
+      arrange(Rank, Country)
+    
+    #filtered_order<- filtered[order(Rank,Country),]
+    filtered[c("Year", "Country", "Rank",input$variable)]
+  })
 }
 
 
