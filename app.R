@@ -1,6 +1,14 @@
 library(shinydashboard)
-library(wesanderson) 
+library(shiny)
 library(tidyverse)
+library(wesanderson) 
+<<<<<<< HEAD
+library(tidyverse)
+=======
+library(rworldmap)
+library(rgdal)
+library(WDI)
+>>>>>>> bc58b4df4e70e043bfa1a6709ab64d7f2be15fef
 
 ui <- dashboardPage(skin = "purple",
   dashboardHeader(title = "The App of Happiness"),
@@ -21,7 +29,56 @@ ui <- dashboardPage(skin = "purple",
             h2("Introduce our App")),
       #Second tab content
       tabItem(tabName = "widget1",
-            h2("Claire's beautiful map")),
+              fluidPage(
+                
+                fluidRow(h1("")),
+                
+                fluidRow(
+                  column(2,
+                         
+                         h3("rworldmapUI"),
+                   
+                         radioButtons("year", "Year",
+                                     c("2015" = "2015",
+                                       "2016" = "2016",
+                                       "2017" = "2017"
+                                     )),           
+                         
+                         selectInput("catMethod", "categorisation :",
+                                     c("quantiles" = "quantiles",
+                                       "fixedWidth" = "fixedWidth",
+                                       "logFixedWidth" = "logFixedWidth"                         
+                                     )),          
+                         
+                         sliderInput("Rank", "Happiness Ranking", 
+                                     min = 1,
+                                     max = 100,
+                                     value = 10),
+                         
+                         
+                         selectInput("colourPalette", "colourPalette :",
+                                     c("Zissou" = "Zissou",
+                                       "YlGnBu" = "YlGnBu",
+                                       "Purples" = "Purples",
+                                       "PuBuGn" = "PuBuGn",
+                                       "Greens" = "Greens"
+                                     )), 
+   
+                         
+                         checkboxInput("addLegend", "addLegend", TRUE) #var,name
+                  ),
+                  
+                  column(10,
+                         
+                        mainPanel("mapplot", plotOutput("mapplot", width = "1200", height = "800")
+                           )
+                           )
+ 
+                  )
+                
+                
+              ))
+      ,
       #Third tab
       tabItem(tabName = "widget2",
         fluidRow(
@@ -57,7 +114,22 @@ server <- function(input, output){
     data <- histdata[seq_len(input$slider)]
     hist(data)
     })
-  #output$bubble <- renderPlot({
+  
+sPDF <- joinCountryData2Map(world_happiness
+                                     , joinCode = "ISO3"
+                                     , nameJoinColumn="ISO")
+output$mapplot <- renderPlot({
+  mapplot <- mapCountryData(sPDF, 
+                              nameColumnToPlot = "Rank15",
+                              catMethod = 'categorical',
+                              colourPalette = zissou,
+                              missingCountryCol = "grey60",
+                              addLegend = TRUE)
+})
+
+
+
+#output$bubble <- renderPlot({
   #  ggplot(happy_1516, aes(x=input$VariableX,y=input$VariableY)+
   #           geom_point(aes(size = Rank, color = input$Region), alpha = 0.5)+
   #           theme_classic())
