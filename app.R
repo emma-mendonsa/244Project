@@ -12,7 +12,8 @@ library(rworldmap)
 library(RColorBrewer)
 library(plotly)
 
-ui <- dashboardPage(skin = "purple",
+ui <- dashboardPage(
+  #skin = "purple",
   dashboardHeader(title = "The App of Happiness"),
   
   dashboardSidebar(
@@ -28,23 +29,49 @@ ui <- dashboardPage(skin = "purple",
       #First tab content
       tabItem(tabName = "dashboard",
               fluidPage(
-                
-                fluidRow(h1("Introduce our App")),
+
                 fluidRow(
-                  
-                  column(3,
-                         selectInput("Information","Information",
-                                     c("Introduction"="Introduction",
-                                       "Data Source"="Data Source",
-                                       "Descriptions"="Descriptions")
-                                     )
-                         )
-                ),
-               
-                 mainPanel(
-                  textOutput("Information"))
+                  column(9,
+                  h1("The App of Happiness"))),
                 
-              )),
+                #fluidRow( 
+                #  column(3,
+
+                #       selectInput("Information","",
+                #                 c("Background" = "background",
+                #                   "Data Source"="datasource",
+                #                   "Descriptions"="descriptions")
+                #                    ))),                
+                
+                #box(textOutput("Information")),
+                
+                fluidRow(
+                  column(9,
+                  h4(p(strong("This app presents the each country's happiness in terms of GPD, Health, Family, Trust, and more.")), 
+                    h4(p("Through globalization each country's happiness level has the ability to impact the health of international relations."),
+                       p("The UN Sustainable Development Solutions Network has led a survey in 156 countries over the past few years where
+                         and participants are asked to rank their happiness between 0 and 10. These were combined with quantitative country-specic 
+                         data to better understand country characteristics that lead to happiness."))))),
+                  
+
+                fluidRow(
+                  column(9,
+              
+                    h4(
+                      p("Data Source: All data utilized in this app was found at: https://www.kaggle.com/unsdsn/world-happiness/data"),
+                      p("See 'Descriptions' for a description of each parameter."))),
+                  
+                    column(12,
+                  img(src = "flower.png", 
+                      #size = "page",
+                      align = "left",
+                      height = 500, width = 1200
+                      )))
+                )),
+               
+                 #mainPanel(
+                  #textOutput("Information"))
+
       #Second tab content
       tabItem(tabName = "widget1",
               fluidPage(
@@ -143,9 +170,6 @@ ui <- dashboardPage(skin = "purple",
 
 server <- function(input, output){
  
-  output$Information <- renderText({ 
-    "You have selected this"
-  })
   
   
 vertical <- joinCountryData2Map(vertical
