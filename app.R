@@ -88,16 +88,13 @@ ui <- dashboardPage(skin = "purple",
         fluidRow(
           box(selectInput("variable", "Select Characteristic:",
                       c("GDP"="GDP", "Health" = "Health", "Trust" = "Trust", "Generosity" = "Generosity"))),
-          box(sliderInput("Rank", "Happiness Ranking - \nClick & Drag for 2 sliders:", min = 1, max = 160, happy_all$Rank)),
+          box(sliderInput("Rank", "Happiness Ranking - \nClick & Drag for 2 sliders:",1,160,c(20,50))),
           box(tableOutput("mini"))
         )
         )
         )))
 
-
 server <- function(input, output){
- 
-
  
 vertical <- joinCountryData2Map(vertical
                                   , joinCode = "ISO3"
@@ -157,8 +154,7 @@ output$mapplot17 <- renderPlot({
     
   #})
   output$mini <- renderTable({
-    filtered <-
-      happy_all %>% 
+    filtered <- vertical%>% 
       filter(Rank >= input$Rank[1], 
              Rank <= input$Rank[2])
     filtered[c("Year", "Country", "Rank",input$variable)]
