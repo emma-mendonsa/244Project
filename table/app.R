@@ -28,6 +28,7 @@ happy16$Year <- Year16
 happy17$Year <- Year17
 
 happy_all <- rbind(happy15, happy16, happy17)
+happy_all$Year <- as.character(happy_all$Year)
 
 happy_1516 <- rbind(happy15, happy16)
 
