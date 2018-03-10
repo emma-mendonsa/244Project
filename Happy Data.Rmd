@@ -217,26 +217,16 @@ zissou <- wes_palette("Zissou", 155, type = c("continuous"))
 
 # Map data using rworld map
 
-<<<<<<< HEAD
-
 map_all_2015 <- mapCountryData(vertical2, 
                nameColumnToPlot = "Rank",
-               numCats = 140,
+               numCats = 158,
                catMethod = 'FixedWidth',
                colourPalette = spectral,
                missingCountryCol = "grey80",
                mapTitle = "Global Happniness Rankings",
-               addLegend = TRUE)
+               addLegend = FALSE)
+do.call(addMapLegend, c(map_all_2015, legendWidth = 0.5, legendMar =4, labelFontSize=1.5))
 
-
-=======
-map_all_2015 <- mapCountryData(world_happy, 
-               nameColumnToPlot = "Rank",
-               catMethod = 'categorical',
-               colourPalette = zissou,
-               missingCountryCol = "grey0",
-               mapTitle = "Global Happniness Rankings")
->>>>>>> 57193d6bd31784c31cb954ac309497e3af1efdd1
 ```
 
 
@@ -292,5 +282,11 @@ vert16 <- joinCountryData2Map(vert16
 vert17 <- joinCountryData2Map(vert17
                               , joinCode = "ISO3"
                               , nameJoinColumn="ISO")
+```
+
+```{r}
+
+Introduction <- ("This is our app")
+
 ```
 
