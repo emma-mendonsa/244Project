@@ -38,7 +38,7 @@ ui <- dashboardPage(skin = "purple",
                   column(2,
                          
                          h3("World Map"),
-      
+                         
                          selectInput("variable2", "Category",
                                      c("Rank" = "Rank",
                                        "Score" = "Score",
@@ -47,17 +47,15 @@ ui <- dashboardPage(skin = "purple",
                                        "Health" = "Health",
                                        "Freedom" = "Freedom",
                                        "Trust" = "Trust",
-                                       "Dystopia Residual" = "DysRes"
-                                       )),
-            
+                                       "Dystopia Residual" = "DysRes" 
+                                     )),
 
-                         
-                         selectInput("colourPalette", "colourPalette",
-                                     c("zissou" = "zissou",
-                                       "rushmore" = "rushmore"
-                                     )), 
+                         #selectInput("colors", "colors",
+                                     #c("spectral" = "spectral")
+                                     
+                                     #), 
 
-                         checkboxInput("addLegend", "addLegend", TRUE) #var,name
+                         checkboxInput("addLegend", "addLegend", TRUE) 
                   ),
                   
                   column(10,
@@ -97,20 +95,19 @@ ui <- dashboardPage(skin = "purple",
 
 server <- function(input, output){
  
+  
 vertical <- joinCountryData2Map(vertical
                                   , joinCode = "ISO3"
                                   , nameJoinColumn="ISO")
 
-#colourPalette <- brewer.pal(10,'Spectral')
-zissou <- wes_palette("Zissou", type = "continuous")
-moonrise <- wes_palette("Moonrise1", type = "continuous")
 
 output$mapplot15 <- renderPlot({
   
   mapplot15 <- mapCountryData(vert15,
                               nameColumnToPlot = input$variable2,
-                              catMethod = 'categorical',
-                              colourPalette = rushmore,
+                              numCats = 155,
+                              catMethod = 'FixedWidth',
+                              colourPalette = spectral,
                               missingCountryCol = "grey60",
                               addLegend = input$addLegend)
 
@@ -121,8 +118,9 @@ output$mapplot16 <- renderPlot({
   
   mapplot16 <- mapCountryData(vert16,
                               nameColumnToPlot = input$variable2,
-                              catMethod = 'categorical',
-                              colourPalette = input$colourPalette,
+                              numCats=155,
+                              catMethod = 'FixedWidth',
+                              colourPalette = spectral,
                               missingCountryCol = "grey60",
                               addLegend = input$addLegend)
 })
@@ -131,8 +129,9 @@ output$mapplot17 <- renderPlot({
   
   mapplot17 <- mapCountryData(vert17,
                               nameColumnToPlot = input$variable2,
-                              catMethod = 'categorical',
-                              colourPalette = input$colourPalette,
+                              numCats=155,
+                              catMethod = 'FixedWidth',
+                              colourPalette = spectral,
                               missingCountryCol = "grey90",
                               oceanCol = "slategray1",
                               addLegend = input$addLegend)
@@ -147,7 +146,6 @@ output$mapplot17 <- renderPlot({
     })
 
 
-
 #output$bubble <- renderPlot({
   #  ggplot(happy_1516, aes(x=input$VariableX,y=input$VariableY)+
   #           geom_point(aes(size = Rank, color = input$Region), alpha = 0.5)+
@@ -155,7 +153,7 @@ output$mapplot17 <- renderPlot({
     
   #})
   output$mini <- renderTable({
-    filtered <- vertical%>% 
+    filtered <- vertical_table %>% 
       filter(Rank >= input$Rank[1], 
              Rank <= input$Rank[2])
     filtered[c("Year", "Country", "Rank",input$variable)]
