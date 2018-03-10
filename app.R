@@ -10,6 +10,7 @@ library(maptools)
 library(mapdata)
 library(rworldmap)
 library(RColorBrewer)
+library(plotly)
 
 ui <- dashboardPage(skin = "purple",
   dashboardHeader(title = "The App of Happiness"),
@@ -27,7 +28,24 @@ ui <- dashboardPage(skin = "purple",
       
       #First tab content
       tabItem(tabName = "dashboard",
-            h2("Introduce our App")),
+              fluidPage(
+                
+                fluidRow(h1("Introduce our App")),
+                fluidRow(
+                  
+                  column(3,
+                         selectInput("Information","Information",
+                                     c("Introduction"="Introduction",
+                                       "Data Source"="Data Source",
+                                       "Descriptions"="Descriptions")
+                                     )
+                         )
+                ),
+               
+                 mainPanel(
+                  textOutput("Information"))
+                
+              )),
       #Second tab content
       tabItem(tabName = "widget1",
               fluidPage(
@@ -136,6 +154,10 @@ ui <- dashboardPage(skin = "purple",
 
 server <- function(input, output){
  
+  output$Information <- renderText({ 
+    "You have selected this"
+  })
+  
   
 vertical <- joinCountryData2Map(vertical
                                   , joinCode = "ISO3"
@@ -188,8 +210,18 @@ output$mapplot17 <- renderPlot({
 
 
 
+<<<<<<< HEAD
   output$mini <- renderTable({
+=======
+#output$bubble <- renderPlot({
+  #  ggplot(happy_1516, aes(x=input$VariableX,y=input$VariableY)+
+  #           geom_point(aes(size = Rank, color = input$Region), alpha = 0.5)+
+  #           theme_classic())
+    
+  #})
+>>>>>>> 417c367ba6dafa273bf0c065f513db047046fe5a
 
+  output$mini <- renderTable({
     filtered <- vertical_table%>% 
       filter(Rank >= input$Rank[1], 
              Rank <= input$Rank[2],
