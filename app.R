@@ -209,17 +209,13 @@ output$mapplot17 <- renderPlot({
     })
 
 
-
-<<<<<<< HEAD
-  output$mini <- renderTable({
-=======
 #output$bubble <- renderPlot({
   #  ggplot(happy_1516, aes(x=input$VariableX,y=input$VariableY)+
   #           geom_point(aes(size = Rank, color = input$Region), alpha = 0.5)+
   #           theme_classic())
     
   #})
->>>>>>> 417c367ba6dafa273bf0c065f513db047046fe5a
+
 
   output$mini <- renderTable({
     filtered <- vertical_table%>% 
