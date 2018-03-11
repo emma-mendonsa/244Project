@@ -1,0 +1,13 @@
+name: 244Project-Happy
+title: 244Project-Happy
+username:
+account: emmasiegfried
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 297146
+bundleId: 1262859
+url: https://emmasiegfried.shinyapps.io/244Project-Happy/
+when: 1520733505.53358
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: GitHub_Procedures.R|Happy Data.Rmd
