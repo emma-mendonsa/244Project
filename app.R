@@ -19,12 +19,14 @@ ui <- dashboardPage(
   dashboardSidebar(
     sidebarMenu(
       menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
+      menuItem("Parameter Descriptions", tabName = "description", icon = icon("book")),
       menuItem("Global Perspective", tabName = "widget1", icon = icon("globe")),
       menuItem("Comparisons", tabName = "widget3", icon = icon("bar-chart"))
     )),
   
   dashboardBody(
     tabItems(
+      
       
       #First tab content
       tabItem(tabName = "dashboard",
@@ -59,7 +61,7 @@ ui <- dashboardPage(
               
                     h4(
                       p("Data Source: All data utilized in this app was found at: https://www.kaggle.com/unsdsn/world-happiness/data"),
-                      p("See 'Descriptions' for a description of each parameter."))),
+                      p("See 'Parameter Descriptions' for further information on each parameter."))),
                   
                     column(12,
                   img(src = "flower.png", 
@@ -73,6 +75,19 @@ ui <- dashboardPage(
                   #textOutput("Information"))
 
       #Second tab content
+      tabItem(tabName = "description",
+              fluidPage(
+                column(12,
+                       img(src = "table_descrip.jpg", 
+                           size = "auto",
+                           align = "center"
+                           #height = 500, width = 1200
+                       ))
+              )
+              ),      
+      
+      
+      #Third tab content
       tabItem(tabName = "widget1",
               fluidPage(
                 
@@ -116,7 +131,7 @@ ui <- dashboardPage(
               )),
       
       
-      #Third tab
+      #Fourth tab
       tabItem(tabName = "widget3",
         fluidPage(
 
