@@ -187,25 +187,45 @@ ui <- dashboardPage(
                 
                 fluidRow(
                   column(10,
-                         h1("Description of Variables in the World Happiness Project Data")),
+                         h1("Description of Variables in the World Happiness Project (WHR)"),
+                         h4("Authors of WHR evaluate information gathered from annual Gallup World Poll (GWP) surveys. The following variables assessed for their relative 
+                            contributions to survery participants' overall happiness score and national trends.")),
                   column(10,
-                         h4("Rank"),
-                         h5("“Please imagine a ladder, with steps numbered from
-0 at the bottom to 10 at the top. The top of the ladder represents the best
-                            possible life for you and the bottom of the ladder represents the worst possible
-                            life for you. On which step of the ladder would you say you personally feel you
-                            stand at this time?”"),
-                         h4("Score"),
-                         h5("weoirjw"),
-                         h4("Health"),
-                         h5("Blach"),
-                         h4("Family"),
-                         h5("weoirjw"),
-                         h4("Trust"),
-                         h5("Blach"),
-                         h4("Freesom"),
-                         h5("baskdl"))
-        )
+                         h4("Rank (range: 1-155,156,158 for 2015, 2016, and 2017, respectively)"),
+                         h5("Ranks are based on countries' average score."),
+                         h4("Score (range: 1-10)"),
+                         h5("Survey participants answered the following question. Each country's score represents the national average response."),
+                         h5("“Please imagine a ladder, with steps numbered from 0 at the bottom to 10 at the top. 
+The top of the ladder represents the best possible life for you and the bottom of the ladder represents the worst possible life for you. 
+On which step of the ladder would you say you personally feel you stand at this time?”"),
+                         h4("GDP (WHR range: 0-2)"),
+                         h5("GDP information was gathered from the World Development Indicators (WDI) 2016 report. For countries with missing data, forecasts were made 
+                            from previous years, with inflation accounted for. The same method was used in 2017 for all countries, since the 2017 summary GDP information wasn't available when the WHR data was released."),
+                         h4("Health (WHR range: 0-2)"),
+                         h5("Health pertains specifically to healthy life expectancy. 
+                            Time series of healthy life expectancy from birth were calculated from
+                            data produced by the World Health Organization (WHO) and WDI."),
+                         h4("Social Support (WHR range: 0-2)"),
+                         h5("GWP survey participants were asked to answer the following 
+                            binary question. WHR values are based on the national average."),
+                         h5("“If you were in trouble, do you have relatives or friends you can count on to help you
+                            whenever you need them, or not?”"),
+                         h4("Freedom (WHR range: 0-2)"),
+                         h5("GWP survey participants answered the following question. WHR values are based on the national average."),
+                         h5("“Are you satisfied or dissatisfied with your freedom to choose what
+you do with your life?”"),
+                         h4("Generosity (WHR range: 0-2)"),
+                         h5("GWP survey participants answered the following binary question. WHR values are based on the residual regression of national averages."),
+                         h5("“Have you donated money to a charity in the past month?”"),
+                         h4("Trust (WHR range: 0-2)"),
+                         h5("GWP survey participants answered the following question. WHR values are based on the proportion of survey participants who reported that most people can be trusted."),
+                         h5("“Generally speaking, would you say that most people can be trusted or that you have to be careful in dealing with people?”"),
+                       h1(""),
+                         
+                         h6("Data Source: Helliwell, John et al. (2017) 'Statistical Appendix for 'The social foundations of world happiness' World Happiness Report.    'http://worldhappiness.report/wp-content/uploads/sites/2/2017/03/StatisticalAppendixWHR2017.pdf"))
+                )
+                         
+        
     
     
  
@@ -215,22 +235,22 @@ ui <- dashboardPage(
     )
   )
 )
-      
+     
 
 
 
 
 
 
-source("happyData.R", local = TRUE)
+#source("happyData.R", local = TRUE)
 
 server <- function(input, output){
  
   
   
 #vertical <- joinCountryData2Map(vertical
-#                                  , joinCode = "ISO3"
-#                                  , nameJoinColumn="ISO")
+ #                                , joinCode = "ISO3"
+  #                                , nameJoinColumn="ISO")
 
 
 output$mapplot15 <- renderPlot({
