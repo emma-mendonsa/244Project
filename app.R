@@ -13,7 +13,7 @@ library(RColorBrewer)
 library(plotly)
 
 ui <- dashboardPage(
-  #skin = "purple",
+  skin = "purple",
   dashboardHeader(title = "The App of Happiness"),
   
   dashboardSidebar(
@@ -166,15 +166,15 @@ ui <- dashboardPage(
 
 
 
-
+source("happyData.R", local = TRUE)
 
 server <- function(input, output){
  
   
   
-vertical <- joinCountryData2Map(vertical
-                                  , joinCode = "ISO3"
-                                  , nameJoinColumn="ISO")
+#vertical <- joinCountryData2Map(vertical
+#                                  , joinCode = "ISO3"
+#                                  , nameJoinColumn="ISO")
 
 
 output$mapplot15 <- renderPlot({
