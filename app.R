@@ -20,7 +20,8 @@ ui <- dashboardPage(
     sidebarMenu(
       menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
       menuItem("Global Perspective", tabName = "widget1", icon = icon("globe")),
-      menuItem("Comparisons", tabName = "widget3", icon = icon("bar-chart"))
+      menuItem("Comparisons", tabName = "widget3", icon = icon("bar-chart")),
+      menuItem("Variable Descriptions", tabName = "variable", icon=icon("info-circle"))
     )),
   
   dashboardBody(
@@ -76,14 +77,14 @@ ui <- dashboardPage(
       tabItem(tabName = "widget1",
               fluidPage(
                 
-                fluidRow(h1("")),
+                fluidRow(h1("World Map:"),(h2("Display each variable to get the global perspective."))),
+                
                 
                 fluidRow(
                   column(2,
                          
-                         h3("World Map"),
                          
-                         selectInput("variable2", "Category",
+                         selectInput("variable2", "Variable to display:",
                                      c("Rank" = "Rank",
                                        "Score" = "Score",
                                        "GDP" = "GDP",
@@ -94,13 +95,21 @@ ui <- dashboardPage(
                                        "Dystopia Residual" = "DysRes" 
                                      )),
 
-                         #selectInput("colors", "colors",
-                                     #c("spectral" = "spectral")
+                         selectInput("colors", "Color palette options: ",
+                                     c("Diverging"="diverging",
+                                       "Heat" = "heat",
+                                       "Rainbow"="rainbow",
+                                       "Terrain"="terrain",
+                                       "Topo"="topo",
+                                       #"spectral"="spectral",
+                                       "Awesome"="palette")
                                      
-                                     #), 
+                                     ), 
 
-                         checkboxInput("addLegend", "addLegend", TRUE) 
+                         checkboxInput("addLegend", "addLegend", TRUE),
+                         h6("Countries with no data represented in grey")
                   ),
+                 
                   
                   column(10,
                          
@@ -156,9 +165,41 @@ ui <- dashboardPage(
             box(plotlyOutput("bubble"),
                 title = "Graphical Summary",
                 status = "success",
-                solidHeader = T))
+                solidHeader = T)),
+      
+      tabItem(tabName = "variable",
+              fluidPage(
+                
+                fluidRow(
+                  column(10,
+                         h1("Description of Variables in the World Happiness Project Data")),
+                  column(10,
+                         h4("Rank"),
+                         h5("“Please imagine a ladder, with steps numbered from
+0 at the bottom to 10 at the top. The top of the ladder represents the best
+                            possible life for you and the bottom of the ladder represents the worst possible
+                            life for you. On which step of the ladder would you say you personally feel you
+                            stand at this time?”"),
+                         h4("Score"),
+                         h5("weoirjw"),
+                         h4("Health"),
+                         h5("Blach"),
+                         h4("Family"),
+                         h5("weoirjw"),
+                         h4("Trust"),
+                         h5("Blach"),
+                         h4("Freesom"),
+                         h5("baskdl"))
         )
+    
+    
+ 
+    
+    
         ))
+    )
+  )
+)
       
 
 
@@ -183,8 +224,9 @@ output$mapplot15 <- renderPlot({
                               nameColumnToPlot = input$variable2,
                               numCats = 155,
                               catMethod = 'FixedWidth',
-                              colourPalette = spectral,
+                              colourPalette = input$colors,
                               missingCountryCol = "grey60",
+                              oceanCol = "slategray1",
                               addLegend = input$addLegend)
 
 })
@@ -196,8 +238,9 @@ output$mapplot16 <- renderPlot({
                               nameColumnToPlot = input$variable2,
                               numCats=155,
                               catMethod = 'FixedWidth',
-                              colourPalette = spectral,
+                              colourPalette = input$colors,
                               missingCountryCol = "grey60",
+                              oceanCol = "slategray1",
                               addLegend = input$addLegend)
 })
 
@@ -207,8 +250,8 @@ output$mapplot17 <- renderPlot({
                               nameColumnToPlot = input$variable2,
                               numCats=155,
                               catMethod = 'FixedWidth',
-                              colourPalette = spectral,
-                              missingCountryCol = "grey90",
+                              colourPalette = input$colors,
+                              missingCountryCol = "grey60",
                               oceanCol = "slategray1",
                               addLegend = input$addLegend)
 })
