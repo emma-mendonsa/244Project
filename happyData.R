@@ -1,3 +1,4 @@
+#```{r pacakges&data, message=FALSE, warning=FALSE}
 library(tidyverse)
 library(sf)
 library(sp)
@@ -7,7 +8,7 @@ library(maptools)
 library(mapdata)
 library(rworldmap)
 library(RColorBrewer)
-library(grDevices)
+#library(grDevices)
 library(wesanderson)
 
 happy2015 <- read_csv("2015.csv")
@@ -16,7 +17,8 @@ happy2017 <- read_csv("2017.csv")
 longlat <- read_csv("latlong.csv")
 
 
-##Individual years dataframes
+#Individual years dataframes
+#```{r combine_data}
 # Add year column
 happy2015$Year <- rep(2015, 158)
 
@@ -109,7 +111,9 @@ vertical_table$Year <- as.character(vertical_table$Year)
 
 
 
-#Datasets for mapping with rworldmap (no coordinates)
+
+#-Datasets for mapping with rworldmap (no coordinates)
+#```{r}
 #10 happiest
 top10_15<-horizontal%>% 
   select("Country","ISO","Rank15") %>% 
@@ -125,6 +129,7 @@ top10_17<-horizontal%>%
   select("Country","ISO","Rank17") %>% 
   arrange(Rank17) %>% 
   head(10)
+
 
 #Horizontal dataframe with lat long. 
 #add coordinates to horizontal
@@ -145,6 +150,7 @@ top10_17<-horizontal%>%
 
 
 #Top 10 rankings for each year with long/lat coordinates
+#```{r}
 map_15 <- full_join(happy2015, longlat, by = "Country") %>% 
   filter(Year !="NA") %>% 
   st_as_sf(coords=c("lat","long"))
@@ -159,6 +165,7 @@ map_17 <- full_join(happy2017, longlat, by = "Country") %>%
 
 
 #Countries with bubbles
+#```{r bubbles_on_countries}
 ## Cdf coordinate systems
 #st_crs(map_15) <- 4326
 #st_crs(countries) <- 4326
@@ -188,9 +195,8 @@ spectral <- brewer.pal(10,'Spectral')
 zissou <- wes_palette("Zissou", 155, type = c("continuous"))
 #rushmore <- wes_palette("Rushmore", type = "continuous")
 
+
 # Map data using rworld map
-
-
 
 map_all_2015 <- mapCountryData(vertical2, 
                                nameColumnToPlot = "Rank",
@@ -213,7 +219,7 @@ map_all_2015 <- mapCountryData(world_happy,
 
 
 #Prep data to be mapped with rworldmap - 10 Happiest for each year.
-
+#```{r}
 top10_15map <- joinCountryData2Map(top10_15
                                    , joinCode = "ISO3"
                                    , nameJoinColumn="ISO")
@@ -225,6 +231,7 @@ top10_16map <- joinCountryData2Map(top10_16
 top10_17map <- joinCountryData2Map(top10_17
                                    , joinCode = "ISO3"
                                    , nameJoinColumn="ISO")
+
 
 #Create top10 maps
 
@@ -242,6 +249,7 @@ mapCountryData(top10_17map,
                nameColumnToPlot = "Rank17",
                catMethod = 'categorical',
                colourPalette = zissou)
+
 
 
 vert15 <- vertical %>% 
