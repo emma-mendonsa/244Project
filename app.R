@@ -1,11 +1,9 @@
 library(shinydashboard)
 library(shiny)
 library(tidyverse)
-library(wesanderson) 
 library(rworldmap)
 library(sf)
 library(sp)
-library(rgdal)
 library(maptools)
 library(mapdata)
 library(rworldmap)
@@ -22,7 +20,7 @@ ui <- dashboardPage(
       menuItem("Variable Descriptions", tabName = "variable", icon=icon("info-circle")),
       menuItem("Global Perspective", tabName = "widget1", icon = icon("globe")),
       menuItem("Comparisons", tabName = "widget3", icon = icon("bar-chart")),
-      menuItem("What should we call this?", tabName = "individual", icon = icon("table"))
+      menuItem("Country Index", tabName = "individual", icon = icon("table"))
    
     )),
   
@@ -62,8 +60,15 @@ ui <- dashboardPage(
                   )
                   )
                 ),
+<<<<<<< HEAD
   
 ##### Map tab content #####
+=======
+               
+
+      
+      #Second tab content
+>>>>>>> 58526c5d23e36be03b684be8bc500a01213dae71
       tabItem(tabName = "widget1",
               fluidPage(
                 
@@ -115,7 +120,11 @@ ui <- dashboardPage(
               )),
       
       
+<<<<<<< HEAD
 #####Comparisons Tab Content####
+=======
+      #Third tab
+>>>>>>> 58526c5d23e36be03b684be8bc500a01213dae71
       tabItem(tabName = "widget3",
         fluidPage(
 
@@ -202,6 +211,7 @@ you do with your life?”"),
                          h6("Data Source: Helliwell, John et al. (2017) 'Statistical Appendix for 'The social foundations of world happiness' World Happiness Report.    'http://worldhappiness.report/wp-content/uploads/sites/2/2017/03/StatisticalAppendixWHR2017.pdf"))
 
                   )
+<<<<<<< HEAD
                 )
               ), 
 ###Filtered table tab content###
@@ -212,6 +222,17 @@ tabItem(tabName = "individual",
                    h4("Use the main search bar, sort by column, or search by column at the bottom of the table."),
                    column(10,dataTableOutput('table'))))) 
     
+=======
+                        )
+                ), 
+
+    #Fifth tab content
+      tabItem(tabName = "individual",
+          fluidPage(
+            fluidRow(h2("World Happiness Report Data (2015-2017)"),
+                   h4("Use the main search bar, sort data by column, or search by column at the bottom of the table."),
+                   column(10,dataTableOutput('table')))))
+>>>>>>> 58526c5d23e36be03b684be8bc500a01213dae71
         )))
  
 
