@@ -19,10 +19,7 @@ ui <- dashboardPage(
   dashboardSidebar(
     sidebarMenu(
       menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
-<<<<<<< HEAD
-      menuItem("Individual Countries", tabName = "individual", icon = icon("book")),
-=======
->>>>>>> 4bcb2a6eeec63663181407422c19558ae7f4024e
+      menuItem("What should we call this?", tabName = "individual", icon = icon("table")),
       menuItem("Global Perspective", tabName = "widget1", icon = icon("globe")),
       menuItem("Comparisons", tabName = "widget3", icon = icon("bar-chart")),
       menuItem("Variable Descriptions", tabName = "variable", icon=icon("info-circle"))
@@ -30,7 +27,6 @@ ui <- dashboardPage(
   
   dashboardBody(
     tabItems(
-      
       
       #First tab content
       tabItem(tabName = "dashboard",
@@ -43,23 +39,16 @@ ui <- dashboardPage(
 
                 fluidRow(
                   column(9,
-<<<<<<< HEAD
-                  h4(p(strong("This app presents each country's happiness in terms of GPD, Health, Family, Trust, and more.")), 
-                    h4(p("Through globalization each country's happiness level has the ability to impact the health of international relations."),
-                       p("The UN Sustainable Development Solutions Network has led a survey in 156 countries over the past few years where
-                         and participants are asked to rank their happiness between 0 and 10. These were combined with quantitative country-specic 
-                         data to better understand country characteristics that lead to happiness."))))),
-=======
                   h4(p(strong("This app presents the each country's happiness in terms of GPD, Health, Family, Trust, and more.")), 
                    h4(p("Through globalization each country's happiness level has the ability to impact the health of international relations."),
                       p("The UN Sustainable Development Solutions Network has led a survey in 156 countries over the past few years where
-                         and participants are asked to rank their happiness between 0 and 10. This rating was then compared to participant responses on how health, family, etc impact their happiness rating. Please see the 'Variable Descriptions' tab for further information on each parameter and the survey questions."))))),
->>>>>>> 4bcb2a6eeec63663181407422c19558ae7f4024e
-                  
+                         and participants are asked to rank their happiness between 0 and 10. This rating was then compared to participant 
+                        responses on how health, family, etc impact their happiness rating. Please see the 'Variable Descriptions' tab for 
+                        further information on each parameter and the survey questions.")))))),
+
 
                 fluidRow(
                   column(9,
-              
                     h4(
                       p("Data Source: All data utilized in this app was found at: https://www.kaggle.com/unsdsn/world-happiness/data"))),
                   
@@ -69,10 +58,13 @@ ui <- dashboardPage(
                       align = "left",
                       height = 500, width = 1200
                       )))
-                )),
+                ),
                
-                 #mainPanel(
-                  #textOutput("Information"))
+    #Second tab content
+    tabItem(tabName = "individual",
+            fluidPage(
+              fluidRow(
+                column(10,dataTableOutput('table'))))),
 
      
       
@@ -221,8 +213,8 @@ you do with your life?”"),
                 ) 
 
     
-        ))
-    )
+        )))
+    
    
 
 
@@ -234,13 +226,9 @@ you do with your life?”"),
 
 server <- function(input, output){
  
-  
-  
-#vertical <- joinCountryData2Map(vertical
- #                                , joinCode = "ISO3"
-  #                                , nameJoinColumn="ISO")
 
-
+  output$table <- renderDataTable(vertical_table2)
+                                  
 output$mapplot15 <- renderPlot({
   
   mapplot15 <- mapCountryData(vert15,
@@ -278,7 +266,6 @@ output$mapplot17 <- renderPlot({
                               oceanCol = "slategray1",
                               addLegend = input$addLegend)
 })
-
 
 
   output$mini <- renderTable({
