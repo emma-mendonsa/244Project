@@ -38,17 +38,19 @@ ui <- dashboardPage(
 
                 fluidRow(
                   column(9,
-                  h4(p(strong("This app presents the each country's happiness in terms of GPD, Health, Family, Trust, and more.")), 
-                   h4(p("Through globalization each country's happiness level has the ability to impact the health of international relations."),
-                      p("The UN Sustainable Development Solutions Network has led a survey in 156 countries over the past few years where
-                         and participants are asked to rank their happiness between 0 and 10. This rating was then compared to participant 
-                        responses on how health, family, etc impact their happiness rating. Please see the 'Variable Descriptions' tab for 
-                        further information on each parameter and the survey questions.")))))),
+                  h4(p(strong("This app presents World Happiness Report findings about each country's happiness in terms of GPD, 
+                              Health, Family, Trust, and more.")), 
+                   h4(p("Through globalization each country's happiness level has the ability to impact international relations."),
+                      p("Authors of the World Happiness Report (WHR) used Gallup World Poll survey data from 2015 through 2017
+                         to score and compare surveyed countries' happiness. This score was then compared to participant 
+                        responses on how health, family, trust, generosity and GDP impact their happiness rating. 
+                        Please see the 'Variable Descriptions' tab for 
+                        further information about each parameter and survey questions.")))))),
 
 
                 fluidRow(
                   column(9,
-                    h4(
+                    h5(
                       p("Data Source: All data utilized in this app was found at: https://www.kaggle.com/unsdsn/world-happiness/data"))),
                   
                     column(12,
@@ -60,15 +62,9 @@ ui <- dashboardPage(
                   )
                   )
                 ),
-<<<<<<< HEAD
-  
-##### Map tab content #####
-=======
-               
 
-      
-      #Second tab content
->>>>>>> 58526c5d23e36be03b684be8bc500a01213dae71
+
+##### Map tab content #####
       tabItem(tabName = "widget1",
               fluidPage(
                 
@@ -112,7 +108,6 @@ ui <- dashboardPage(
                           tabPanel("2015", plotOutput("mapplot15", width = "800", height = "500")),
                           tabPanel("2016", plotOutput("mapplot16", width = "800", height = "500")),
                           tabPanel("2017", plotOutput("mapplot17", width = "800", height = "500"))
-                                  
                           )
                   )
                 )
@@ -120,11 +115,8 @@ ui <- dashboardPage(
               )),
       
       
-<<<<<<< HEAD
+
 #####Comparisons Tab Content####
-=======
-      #Third tab
->>>>>>> 58526c5d23e36be03b684be8bc500a01213dae71
       tabItem(tabName = "widget3",
         fluidPage(
 
@@ -174,8 +166,8 @@ ui <- dashboardPage(
                 fluidRow(
                   column(10,
                          h1("Description of Variables in the World Happiness Project (WHR)"),
-                         h4("Authors of WHR evaluate information gathered from annual Gallup World Poll (GWP) surveys. The following variables assessed for their relative 
-                            contributions to survery participants' overall happiness score and national trends.")),
+                         h4("Authors of WHR evaluated information gathered from annual Gallup World Poll (GWP) surveys. The following variables were assessed for their relative 
+                            contributions to survery participants' overall happiness score, and national trends.")),
                   column(10,
                          h4("Rank (range: 1-155,156,158 for 2015, 2016, and 2017, respectively)"),
                          h5("Ranks are based on countries' average score."),
@@ -211,31 +203,20 @@ you do with your life?”"),
                          h6("Data Source: Helliwell, John et al. (2017) 'Statistical Appendix for 'The social foundations of world happiness' World Happiness Report.    'http://worldhappiness.report/wp-content/uploads/sites/2/2017/03/StatisticalAppendixWHR2017.pdf"))
 
                   )
-<<<<<<< HEAD
+
                 )
               ), 
+
+
 ###Filtered table tab content###
-
-tabItem(tabName = "individual",
-        fluidPage(
-          fluidRow(h2("World Happiness Report Data (2015-2017)"),
-                   h4("Use the main search bar, sort by column, or search by column at the bottom of the table."),
-                   column(10,dataTableOutput('table'))))) 
-    
-=======
-                        )
-                ), 
-
-    #Fifth tab content
       tabItem(tabName = "individual",
           fluidPage(
             fluidRow(h2("World Happiness Report Data (2015-2017)"),
                    h4("Use the main search bar, sort data by column, or search by column at the bottom of the table."),
                    column(10,dataTableOutput('table')))))
->>>>>>> 58526c5d23e36be03b684be8bc500a01213dae71
-        )))
- 
+)))
 
+    
   
 
 
@@ -243,12 +224,10 @@ tabItem(tabName = "individual",
 
 server <- function(input, output){
  
-###Table Page###
-output$table <- renderDataTable(vertical_table2)
- 
 ###Map Page###                               
 output$mapplot15 <- renderPlot({
-  
+
+##2015 tab  
   mapplot15 <- mapCountryData(vert15,
                               nameColumnToPlot = input$variable2,
                               numCats = 155,
@@ -262,7 +241,8 @@ output$mapplot15 <- renderPlot({
   
 
 output$mapplot16 <- renderPlot({
-  
+
+###2016 tab
   mapplot16 <- mapCountryData(vert16,
                               nameColumnToPlot = input$variable2,
                               numCats=155,
@@ -274,7 +254,8 @@ output$mapplot16 <- renderPlot({
 })
 
 output$mapplot17 <- renderPlot({
-  
+
+###2017 tab
   mapplot17 <- mapCountryData(vert17,
                               nameColumnToPlot = input$variable2,
                               numCats=155,
@@ -285,7 +266,7 @@ output$mapplot17 <- renderPlot({
                               addLegend = input$addLegend)
 })
 
-
+###Comparisons Page###  
   output$mini <- renderTable({
     filtered <- vertical_table%>% 
       filter(Rank >= input$Rank[1], 
@@ -296,8 +277,7 @@ output$mapplot17 <- renderPlot({
     filtered[c("Year", "Country", "Score", input$variableA, input$variableB)]
   })
 
-  
-###Comparisons Page###  
+
   output$bubble <- renderPlotly({
     
     bubble_table <- vertical_table %>% 
@@ -321,7 +301,12 @@ output$mapplot17 <- renderPlot({
              yaxis = list(range = c(0,2), title = input$variableB, showgrid = FALSE),
              font = list(size = 12))
 
+  
   })
+  
+###Table Page###
+  output$table <- renderDataTable(vertical_table2)
+  
 }
 
 shinyApp(ui,server)
