@@ -214,24 +214,19 @@ vertical2 <- joinCountryData2Map(vertical
                             , nameJoinColumn="ISO")
 
 # Trying to find the unicorn palette...
-spectral <- brewer.pal(155,"Spectral")
-RdYlBu <- brewer.pal(155,"RdYlBu")
-greens <- brewer.pal(155,"Greens")
-RdBu <- c("#B2182B", "#D6604D", "#F4A582", "#FDDBC7", "#D1E5F0", "#92C5DE", "#4393C3", "#2166AC")
+# spectral <- brewer.pal(155,"Spectral")
+# RdYlBu <- brewer.pal(155,"RdYlBu")
+# greens <- brewer.pal(155,"Greens")
+# RdBu <- c("#B2182B", "#D6604D", "#F4A582", "#FDDBC7", "#D1E5F0", "#92C5DE", "#4393C3", "#2166AC")
 
-#show_col(viridis_pal()(10))
-
-spectral <- rwmGetColours(spectral, 10)
-
-rwmGetColours("Spectral", 10)
-
-as.vector(RdBu)
-
-zissou <- wes_palette("Zissou", 155, type = c("continuous"))
-#rushmore <- wes_palette("Rushmore", type = "continuous")
+# show_col(viridis_pal()(10))
+# spectral <- rwmGetColours(spectral, 10)
+# rwmGetColours("Spectral", 10)
+# as.vector(RdBu)
+# zissou <- wes_palette("Zissou", 155, type = c("continuous"))
+# rushmore <- wes_palette("Rushmore", type = "continuous")
 
 mypalette<-brewer.pal(7,"Greens")
-
 
 # Map data using rworld map
 map_all_2015 <- mapCountryData(vertical2, 
@@ -246,9 +241,9 @@ map_all_2015 <- mapCountryData(vertical2,
 
 ```
 
-
 Prep data to be mapped with rworldmap - 10 Happiest for each year.
 ```{r}
+### Prep data for top 10 maps. 
 top10_15map <- joinCountryData2Map(top10_15
                             , joinCode = "ISO3"
                             , nameJoinColumn="ISO")
@@ -261,8 +256,10 @@ top10_17map <- joinCountryData2Map(top10_17
                             , joinCode = "ISO3"
                             , nameJoinColumn="ISO")
 ```
-Create top10 maps
+
+Create top 10 maps
 ```{r}
+### Top 10 maps--not used in app.R
 mapCountryData(top10_15map, 
                nameColumnToPlot = "Rank15",
                catMethod = 'categorical',
@@ -280,6 +277,7 @@ mapCountryData(top10_17map,
 ```
 
 ```{r}
+## Data to seperate global map into years for different year tabs. 
 vert15 <- vertical %>% 
   filter(Year =="2015")
 

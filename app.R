@@ -29,7 +29,7 @@ ui <- dashboardPage(
   dashboardBody(
     tabItems(
       
-      #First tab content
+#####First tab content####
       tabItem(tabName = "dashboard",
               fluidPage(
 
@@ -58,20 +58,12 @@ ui <- dashboardPage(
                       #size = "page",
                       align = "left",
                       height = 500, width = 1200
-                      )))
+                      )
+                  )
+                  )
                 ),
-               
-    #Second tab content
-    tabItem(tabName = "individual",
-            fluidPage(
-              fluidRow(h2("World Happiness Report Data (2015-2017)"),
-                       h4("Use the main search bar, sort data by column, or search by column at the bottom of the table."),
-                column(10,dataTableOutput('table'))))),
-
-     
-      
-      
-      #Third tab content
+  
+##### Map tab content #####
       tabItem(tabName = "widget1",
               fluidPage(
                 
@@ -123,7 +115,7 @@ ui <- dashboardPage(
               )),
       
       
-      #Fourth tab
+#####Comparisons Tab Content####
       tabItem(tabName = "widget3",
         fluidPage(
 
@@ -166,8 +158,7 @@ ui <- dashboardPage(
                 solidHeader = T)),
       
 
-#Fourth tab
-
+### Variable descriptions Content ###
           tabItem(tabName = "variable",
               fluidPage(
                 
@@ -211,26 +202,30 @@ you do with your life?”"),
                          h6("Data Source: Helliwell, John et al. (2017) 'Statistical Appendix for 'The social foundations of world happiness' World Happiness Report.    'http://worldhappiness.report/wp-content/uploads/sites/2/2017/03/StatisticalAppendixWHR2017.pdf"))
 
                   )
-                        )
-                ) 
+                )
+              ), 
+###Filtered table tab content###
 
+tabItem(tabName = "individual",
+        fluidPage(
+          fluidRow(h2("World Happiness Report Data (2015-2017)"),
+                   h4("Use the main search bar, sort by column, or search by column at the bottom of the table."),
+                   column(10,dataTableOutput('table'))))) 
     
         )))
-    
-   
+ 
 
-
-
+  
 
 
 #source("happyData.R")
 
-
 server <- function(input, output){
  
-
-  output$table <- renderDataTable(vertical_table2)
-                                  
+###Table Page###
+output$table <- renderDataTable(vertical_table2)
+ 
+###Map Page###                               
 output$mapplot15 <- renderPlot({
   
   mapplot15 <- mapCountryData(vert15,
@@ -279,7 +274,9 @@ output$mapplot17 <- renderPlot({
     
     filtered[c("Year", "Country", "Score", input$variableA, input$variableB)]
   })
+
   
+###Comparisons Page###  
   output$bubble <- renderPlotly({
     
     bubble_table <- vertical_table %>% 
