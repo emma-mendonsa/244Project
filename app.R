@@ -19,7 +19,7 @@ ui <- dashboardPage(
   dashboardSidebar(
     sidebarMenu(
       menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
-      menuItem("Parameter Descriptions", tabName = "description", icon = icon("book")),
+      menuItem("Individual Countries", tabName = "individual", icon = icon("book")),
       menuItem("Global Perspective", tabName = "widget1", icon = icon("globe")),
       menuItem("Comparisons", tabName = "widget3", icon = icon("bar-chart")),
       menuItem("Variable Descriptions", tabName = "variable", icon=icon("info-circle"))
@@ -50,7 +50,7 @@ ui <- dashboardPage(
                 
                 fluidRow(
                   column(9,
-                  h4(p(strong("This app presents the each country's happiness in terms of GPD, Health, Family, Trust, and more.")), 
+                  h4(p(strong("This app presents each country's happiness in terms of GPD, Health, Family, Trust, and more.")), 
                     h4(p("Through globalization each country's happiness level has the ability to impact the health of international relations."),
                        p("The UN Sustainable Development Solutions Network has led a survey in 156 countries over the past few years where
                          and participants are asked to rank their happiness between 0 and 10. These were combined with quantitative country-specic 
@@ -106,8 +106,8 @@ ui <- dashboardPage(
                                        "Family" = "Family",
                                        "Health" = "Health",
                                        "Freedom" = "Freedom",
-                                       "Trust" = "Trust",
-                                       "Dystopia Residual" = "DysRes" 
+                                       "Trust" = "Trust"
+                                       #"Dystopia Residual" = "DysRes" 
                                      )),
 
                          selectInput("colors", "Color palette options: ",
