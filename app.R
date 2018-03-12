@@ -14,12 +14,15 @@ library(plotly)
 
 ui <- dashboardPage(
   skin = "purple",
-  dashboardHeader(title = "The App of Happiness"),
+  dashboardHeader(title = "App of Happiness"),
   
   dashboardSidebar(
     sidebarMenu(
       menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
+<<<<<<< HEAD
       menuItem("Individual Countries", tabName = "individual", icon = icon("book")),
+=======
+>>>>>>> 4bcb2a6eeec63663181407422c19558ae7f4024e
       menuItem("Global Perspective", tabName = "widget1", icon = icon("globe")),
       menuItem("Comparisons", tabName = "widget3", icon = icon("bar-chart")),
       menuItem("Variable Descriptions", tabName = "variable", icon=icon("info-circle"))
@@ -37,32 +40,28 @@ ui <- dashboardPage(
                   column(9,
                   h1("The App of Happiness"))),
                 
-                #fluidRow( 
-                #  column(3,
 
-                #       selectInput("Information","",
-                #                 c("Background" = "background",
-                #                   "Data Source"="datasource",
-                #                   "Descriptions"="descriptions")
-                #                    ))),                
-                
-                #box(textOutput("Information")),
-                
                 fluidRow(
                   column(9,
+<<<<<<< HEAD
                   h4(p(strong("This app presents each country's happiness in terms of GPD, Health, Family, Trust, and more.")), 
                     h4(p("Through globalization each country's happiness level has the ability to impact the health of international relations."),
                        p("The UN Sustainable Development Solutions Network has led a survey in 156 countries over the past few years where
                          and participants are asked to rank their happiness between 0 and 10. These were combined with quantitative country-specic 
                          data to better understand country characteristics that lead to happiness."))))),
+=======
+                  h4(p(strong("This app presents the each country's happiness in terms of GPD, Health, Family, Trust, and more.")), 
+                   h4(p("Through globalization each country's happiness level has the ability to impact the health of international relations."),
+                      p("The UN Sustainable Development Solutions Network has led a survey in 156 countries over the past few years where
+                         and participants are asked to rank their happiness between 0 and 10. This rating was then compared to participant responses on how health, family, etc impact their happiness rating. Please see the 'Variable Descriptions' tab for further information on each parameter and the survey questions."))))),
+>>>>>>> 4bcb2a6eeec63663181407422c19558ae7f4024e
                   
 
                 fluidRow(
                   column(9,
               
                     h4(
-                      p("Data Source: All data utilized in this app was found at: https://www.kaggle.com/unsdsn/world-happiness/data"),
-                      p("See 'Parameter Descriptions' for further information on each parameter."))),
+                      p("Data Source: All data utilized in this app was found at: https://www.kaggle.com/unsdsn/world-happiness/data"))),
                   
                     column(12,
                   img(src = "flower.png", 
@@ -75,17 +74,7 @@ ui <- dashboardPage(
                  #mainPanel(
                   #textOutput("Information"))
 
-      #Second tab content
-      tabItem(tabName = "description",
-              fluidPage(
-                column(12,
-                       img(src = "table_descrip.jpg", 
-                           size = "auto",
-                           align = "center"
-                           #height = 500, width = 1200
-                       ))
-              )
-              ),      
+     
       
       
       #Third tab content
@@ -182,7 +171,10 @@ ui <- dashboardPage(
                 status = "success",
                 solidHeader = T)),
       
-      tabItem(tabName = "variable",
+
+#Fourth tab
+
+          tabItem(tabName = "variable",
               fluidPage(
                 
                 fluidRow(
@@ -223,26 +215,22 @@ you do with your life?”"),
                        h1(""),
                          
                          h6("Data Source: Helliwell, John et al. (2017) 'Statistical Appendix for 'The social foundations of world happiness' World Happiness Report.    'http://worldhappiness.report/wp-content/uploads/sites/2/2017/03/StatisticalAppendixWHR2017.pdf"))
-                )
-                         
-        
-    
-    
- 
-    
+
+                  )
+                        )
+                ) 
+
     
         ))
     )
-  )
-)
-     
+   
 
 
 
 
 
+#source("happyData.R")
 
-#source("happyData.R", local = TRUE)
 
 server <- function(input, output){
  
