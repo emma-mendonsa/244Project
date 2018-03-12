@@ -19,10 +19,11 @@ ui <- dashboardPage(
   dashboardSidebar(
     sidebarMenu(
       menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
-      menuItem("What should we call this?", tabName = "individual", icon = icon("table")),
+      menuItem("Variable Descriptions", tabName = "variable", icon=icon("info-circle")),
       menuItem("Global Perspective", tabName = "widget1", icon = icon("globe")),
       menuItem("Comparisons", tabName = "widget3", icon = icon("bar-chart")),
-      menuItem("Variable Descriptions", tabName = "variable", icon=icon("info-circle"))
+      menuItem("What should we call this?", tabName = "individual", icon = icon("table"))
+   
     )),
   
   dashboardBody(
@@ -63,7 +64,8 @@ ui <- dashboardPage(
     #Second tab content
     tabItem(tabName = "individual",
             fluidPage(
-              fluidRow(
+              fluidRow(h2("World Happiness Report Data (2015-2017)"),
+                       h4("Use the main search bar, sort data by column, or search by column at the bottom of the table."),
                 column(10,dataTableOutput('table'))))),
 
      
