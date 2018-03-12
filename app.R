@@ -1,11 +1,9 @@
 library(shinydashboard)
 library(shiny)
 library(tidyverse)
-library(wesanderson) 
 library(rworldmap)
 library(sf)
 library(sp)
-library(rgdal)
 library(maptools)
 library(mapdata)
 library(rworldmap)
@@ -22,7 +20,7 @@ ui <- dashboardPage(
       menuItem("Variable Descriptions", tabName = "variable", icon=icon("info-circle")),
       menuItem("Global Perspective", tabName = "widget1", icon = icon("globe")),
       menuItem("Comparisons", tabName = "widget3", icon = icon("bar-chart")),
-      menuItem("What should we call this?", tabName = "individual", icon = icon("table"))
+      menuItem("Country Index", tabName = "individual", icon = icon("table"))
    
     )),
   
@@ -61,17 +59,9 @@ ui <- dashboardPage(
                       )))
                 ),
                
-    #Second tab content
-    tabItem(tabName = "individual",
-            fluidPage(
-              fluidRow(h2("World Happiness Report Data (2015-2017)"),
-                       h4("Use the main search bar, sort data by column, or search by column at the bottom of the table."),
-                column(10,dataTableOutput('table'))))),
 
-     
       
-      
-      #Third tab content
+      #Second tab content
       tabItem(tabName = "widget1",
               fluidPage(
                 
@@ -123,7 +113,7 @@ ui <- dashboardPage(
               )),
       
       
-      #Fourth tab
+      #Third tab
       tabItem(tabName = "widget3",
         fluidPage(
 
@@ -212,9 +202,14 @@ you do with your life?”"),
 
                   )
                         )
-                ) 
+                ), 
 
-    
+    #Fifth tab content
+      tabItem(tabName = "individual",
+          fluidPage(
+            fluidRow(h2("World Happiness Report Data (2015-2017)"),
+                   h4("Use the main search bar, sort data by column, or search by column at the bottom of the table."),
+                   column(10,dataTableOutput('table')))))
         )))
     
    

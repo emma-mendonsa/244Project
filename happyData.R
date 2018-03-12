@@ -1,3 +1,4 @@
+
 library(tidyverse)
 library(sf)
 library(sp)
@@ -9,6 +10,7 @@ library(rworldmap)
 library(RColorBrewer)
 library(grDevices)
 library(wesanderson)
+library(viridis)
 
 happy2015 <- read_csv("2015.csv")
 happy2016 <- read_csv("2016.csv")
@@ -16,7 +18,7 @@ happy2017 <- read_csv("2017.csv")
 longlat <- read_csv("latlong.csv")
 
 
-##Individual years dataframes
+#Individual years dataframes
 # Add year column
 happy2015$Year <- rep(2015, 158)
 
@@ -47,6 +49,7 @@ colnames(happy2017) <- c("Year","Country","Rank","Score","GDP","Family","Health"
 #Dataframe with years combines vertically
 # Combine all years into stacked data
 # vertical_years <- rbind(happy2017,happy2016,happy2015)
+
 
 #Dataframe with years combined horizontally
 # Combine all data horizontally
@@ -80,13 +83,15 @@ colnames(iso17) <- c("Year","Country","ISO","Rank","Score","GDP","Family","Healt
 
 vertical <- rbind(iso15,iso16,iso17)
 
-#vertical$Score <- round(vertical$Score,digits=c(2))
-#vertical$GDP <- round(vertical$GDP,digits=c(2))
-#vertical$Family <- round(vertical$Family,digits=c(2))
-#vertical$Health <- round(vertical$Health,digits=c(2))
-#vertical$Freedom <- round(vertical$Freedom,digits=c(2))
-#vertical$Trust <- round(vertical$Trust,digits=c(2))
+vertical_table2 <- vertical_table %>% 
+  select("Year","Country","Rank","Score","GDP","Family","Health","Freedom","Trust")
 
+vertical_table2$Score <- round(vertical$Score,digits=c(2))
+vertical_table2$GDP <- round(vertical$GDP,digits=c(2))
+vertical_table2$Family <- round(vertical$Family,digits=c(2))
+vertical_table2$Health <- round(vertical$Health,digits=c(2))
+vertical_table2$Freedom <- round(vertical$Freedom,digits=c(2))
+vertical_table2$Trust <- round(vertical$Trust,digits=c(2))
 
 
 iso15<- horizontal %>% 
@@ -109,7 +114,8 @@ vertical_table$Year <- as.character(vertical_table$Year)
 
 
 
-#Datasets for mapping with rworldmap (no coordinates)
+
+#-Datasets for mapping with rworldmap (no coordinates)
 #10 happiest
 top10_15<-horizontal%>% 
   select("Country","ISO","Rank15") %>% 
@@ -125,6 +131,7 @@ top10_17<-horizontal%>%
   select("Country","ISO","Rank17") %>% 
   arrange(Rank17) %>% 
   head(10)
+
 
 #Horizontal dataframe with lat long. 
 #add coordinates to horizontal
@@ -184,14 +191,26 @@ vertical2 <- joinCountryData2Map(vertical
                                  , nameJoinColumn="ISO")
 
 # Trying to find the unicorn palette...
-spectral <- brewer.pal(10,'Spectral')
+spectral <- brewer.pal(155,"Spectral")
+RdYlBu <- brewer.pal(155,"RdYlBu")
+greens <- brewer.pal(155,"Greens")
+RdBu <- c("#B2182B", "#D6604D", "#F4A582", "#FDDBC7", "#D1E5F0", "#92C5DE", "#4393C3", "#2166AC")
+
+#show_col(viridis_pal()(10))
+
+spectral <- rwmGetColours(spectral, 10)
+
+rwmGetColours("Spectral", 10)
+
+as.vector(RdBu)
+
 zissou <- wes_palette("Zissou", 155, type = c("continuous"))
 #rushmore <- wes_palette("Rushmore", type = "continuous")
 
+mypalette<-brewer.pal(7,"Greens")
+
+
 # Map data using rworld map
-
-
-
 map_all_2015 <- mapCountryData(vertical2, 
                                nameColumnToPlot = "Rank",
                                numCats = 140,
@@ -202,18 +221,9 @@ map_all_2015 <- mapCountryData(vertical2,
                                addLegend = TRUE)
 
 
-map_all_2015 <- mapCountryData(world_happy, 
-                               nameColumnToPlot = "Rank",
-                               catMethod = 'categorical',
-                               colourPalette = zissou,
-                               missingCountryCol = "grey0",
-                               mapTitle = "Global Happniness Rankings")
-
-
 
 
 #Prep data to be mapped with rworldmap - 10 Happiest for each year.
-
 top10_15map <- joinCountryData2Map(top10_15
                                    , joinCode = "ISO3"
                                    , nameJoinColumn="ISO")
@@ -225,7 +235,6 @@ top10_16map <- joinCountryData2Map(top10_16
 top10_17map <- joinCountryData2Map(top10_17
                                    , joinCode = "ISO3"
                                    , nameJoinColumn="ISO")
-
 #Create top10 maps
 
 mapCountryData(top10_15map, 
@@ -242,7 +251,6 @@ mapCountryData(top10_17map,
                nameColumnToPlot = "Rank17",
                catMethod = 'categorical',
                colourPalette = zissou)
-
 
 vert15 <- vertical %>% 
   filter(Year =="2015")
