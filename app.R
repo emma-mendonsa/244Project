@@ -141,7 +141,7 @@ tabItem(tabName = "variable",
                                        "Terrain"="terrain",
                                        "Topo"="topo",
                                        #"spectral"="spectral",
-                                       "Awesome"="palette")
+                                       "Unicorn"="palette")
                                      
                                      ), 
 
